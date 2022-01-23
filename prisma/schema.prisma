@@ -15,7 +15,7 @@ model User {
   username   String   @unique
   email      String   @unique
   profile    Profile?
-  hours      Hour[]
+  hours      Entry[]
   created_at DateTime @default(now())
 }
 
@@ -26,7 +26,7 @@ model Profile {
   name   String
 }
 
-model Hour {
+model Entry {
   uid         String          @id @default(cuid())
   owner       User            @relation(fields: [userId], references: [id])
   userId      Int
@@ -37,13 +37,14 @@ model Hour {
   comment     String
   created_at  DateTime        @default(now())
   trails      HoursOnTrails[]
+  photos      Photo[]
 }
 
 model Location {
   uid    String  @id @default(cuid())
   name   String  @unique
   trails Trail[]
-  hours  Hour[]
+  hours  Entry[]
 }
 
 model Trail {
@@ -54,11 +55,18 @@ model Trail {
   locationUid String?
 }
 
+model Photo {
+  uid      String @id @default(cuid())
+  filename String
+  entry    Entry  @relation(fields: [entryUid], references: [uid])
+  entryUid String
+}
+
 model HoursOnTrails {
   trail    Trail  @relation(fields: [trailUid], references: [uid])
   trailUid String
-  hour     Hour   @relation(fields: [hourUid], references: [uid])
-  hourUid  String
+  hour     Entry  @relation(fields: [entryUid], references: [uid])
+  entryUid String
 
-  @@id([trailUid, hourUid])
+  @@id([trailUid, entryUid])
 }

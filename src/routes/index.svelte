@@ -1,3 +1,5 @@
-<a href="/users/signup">Make a new user</a>
+<script>
+	import Register from './auth/components/Register.svelte';
+</script>
 
-<a href="/hours/new">Add some hours</a>
+<Register />
