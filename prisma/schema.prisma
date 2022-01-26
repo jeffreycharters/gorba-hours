@@ -10,34 +10,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Session {
+  uid   String @unique
+  email String
+}
+
 model User {
-  id         Int      @id @default(autoincrement())
+  uid        String   @id @default(cuid())
   username   String   @unique
+  password   String
   email      String   @unique
   profile    Profile?
   hours      Entry[]
+  role       String   @default("normie")
   created_at DateTime @default(now())
 }
 
 model Profile {
-  id     String @id @default(cuid())
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int    @unique
+  uid    String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [uid])
+  userId String @unique
   name   String
 }
 
 model Entry {
-  uid         String          @id @default(cuid())
-  owner       User            @relation(fields: [userId], references: [id])
-  userId      Int
-  task        String
-  location    Location?       @relation(fields: [locationUid], references: [uid])
-  locationUid String
-  hours       Float
-  comment     String
-  created_at  DateTime        @default(now())
-  trails      HoursOnTrails[]
-  photos      Photo[]
+  uid            String    @id @default(cuid())
+  owner          User      @relation(fields: [userId], references: [uid])
+  userId         String
+  task           String
+  location       Location? @relation(fields: [locationUid], references: [uid])
+  locationUid    String
+  other_location String
+  hours          Float
+  comment        String
+  created_at     DateTime  @default(now())
+  trails         Trail[]
+  photos         Photo[]
 }
 
 model Location {
@@ -48,10 +56,10 @@ model Location {
 }
 
 model Trail {
-  uid         String          @id @default(cuid())
+  uid         String    @id @default(cuid())
   name        String
-  hours       HoursOnTrails[]
-  Location    Location?       @relation(fields: [locationUid], references: [uid])
+  entries     Entry[]
+  Location    Location? @relation(fields: [locationUid], references: [uid])
   locationUid String?
 }
 
@@ -60,13 +68,4 @@ model Photo {
   filename String
   entry    Entry  @relation(fields: [entryUid], references: [uid])
   entryUid String
-}
-
-model HoursOnTrails {
-  trail    Trail  @relation(fields: [trailUid], references: [uid])
-  trailUid String
-  hour     Entry  @relation(fields: [entryUid], references: [uid])
-  entryUid String
-
-  @@id([trailUid, entryUid])
 }

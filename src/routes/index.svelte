@@ -1,5 +1,37 @@
-<script>
-	import Register from './auth/components/Register.svelte';
+<script context="module">
+	export const load = async ({ session }) => {
+		if (session?.user) {
+			return {
+				status: 302,
+				redirect: '/menu'
+			};
+		}
+
+		return {
+			props: {}
+		};
+	};
 </script>
 
-<Register />
+<script>
+	import RegistrationForm from './auth/components/RegistrationForm.svelte';
+	import SignInForm from './auth/components/SignInForm.svelte';
+
+	let signin = true;
+
+	const toggleSignin = () => {
+		signin = !signin;
+	};
+
+	const redirectToMenu = () => {
+		window.location = '/menu';
+	};
+</script>
+
+<div class="flex flex-row flex-wrap gap-4">
+	{#if signin}
+		<SignInForm on:success={redirectToMenu} on:toggle={toggleSignin} />
+	{:else}
+		<RegistrationForm on:success={redirectToMenu} on:toggle={toggleSignin} />
+	{/if}
+</div>
