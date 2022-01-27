@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import { hashPassword } from './_utils';
 import cuid from 'cuid';
 
 import { prisma } from '$lib/prisma';
@@ -32,8 +32,7 @@ export const registerUser = async (user) => {
 		return Promise.reject(new Error('Username or email already exist.'));
 	}
 
-	const hashRounds = 7;
-	const hashedPass = await bcrypt.hash(password, hashRounds);
+	const hashedPass = await hashPassword(password);
 
 	await prisma.user.create({
 		data: {

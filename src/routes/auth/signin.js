@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import { verify } from './_utils';
 import { createSession, getUserByEmail } from './_db';
 import { serialize } from 'cookie';
 
@@ -7,7 +7,7 @@ export const post = async ({ request }) => {
 
 	const user = await getUserByEmail(email);
 
-	const goodPassword = await bcrypt.compare(password, user.password);
+	const goodPassword = await verify(password, user.password);
 
 	if (!user || !goodPassword) {
 		return {

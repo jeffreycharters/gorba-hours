@@ -26,5 +26,6 @@
 
 <div class="flex flex-row flex-wrap gap-4">
 	<a href="/admin/users">User List</a>
+	<a href="/locations">Location List</a>
 	<button on:click={logout}>Logout</button>
 </div>
