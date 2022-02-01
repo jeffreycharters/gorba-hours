@@ -1,39 +1,38 @@
 <script context="module">
-	export const load = async ({ fetch }) => {
-		const res = await fetch('api/locations');
+	export const load = async ({ fetch, params }) => {
+		const res = await fetch(`/api/locations/${params.location}`);
 		const body = await res.json();
 
 		return {
-			props: {
-				locations: body.locations
-			}
+			props: { location: body.location, trails: body.trails }
 		};
 	};
 </script>
 
 <script>
-	export let locations;
+	export let location;
+	export let trails;
 
 	let name = '';
 
-	const addLocation = async () => {
-		const newLocation = {
+	const addTrail = async () => {
+		const newTrail = {
 			name
 		};
-		const res = await fetch('api/locations', {
+		const res = await fetch(`/api/locations/${location.slug}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(newLocation)
+			body: JSON.stringify(newTrail)
 		});
 		const body = await res.json();
-		locations = [...locations, body.location];
+		trails = [...trails, body.trail];
 		name = '';
 	};
 
-	const removeLocation = async (uid) => {
-		const res = await fetch(`api/locations`, {
+	const removeTrail = async (uid) => {
+		const res = await fetch(`/api/locations/trails`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json'
@@ -42,21 +41,21 @@
 		});
 
 		if (res.ok) {
-			locations = locations.filter((l) => l.uid != uid);
+			trails = trails.filter((t) => t.uid != uid);
 		}
 	};
 </script>
 
-<h1>Locations!</h1>
+<h1>Trails at <strong>{location.name}</strong>!</h1>
 
 <p>Right now there are:</p>
 
 <ul>
-	{#each locations as location (location.uid)}
+	{#each trails as trail (trail.uid)}
 		<li class="my-2">
-			--> <a href="locations/{location.slug}" class="underline">{location.name}</a>
+			--> {trail.name}
 			<button
-				on:click={() => removeLocation(location.uid)}
+				on:click={() => removeTrail(trail.uid)}
 				class="bg-red-500 py-1 px-2 rounded-lg text-red-50 text-sm"
 			>
 				Delete
@@ -67,9 +66,9 @@
 
 <div class="font-bold mt-2">Add one:</div>
 
-<form>
+<form on:submit|preventDefault={addTrail}>
 	<div class="flex flex-col w-fit">
-		<label for="name">Location Name</label>
+		<label for="name">Trail Name</label>
 		<input
 			type="text"
 			id="name"
@@ -80,8 +79,7 @@
 		/>
 		<input
 			type="submit"
-			on:click|preventDefault={addLocation}
-			value="Add Location"
+			value="Add Trail"
 			class="border-2 py-2 px-4 w-64 mt-2 bg-emerald-100 border-emerald-700"
 		/>
 	</div>

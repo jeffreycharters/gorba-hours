@@ -1,4 +1,4 @@
-import { hashPassword } from './_utils';
+import { hashPassword } from '$lib/authUtils';
 import cuid from 'cuid';
 
 import { prisma } from '$lib/prisma';

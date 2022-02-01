@@ -1,5 +1,6 @@
 import { prisma } from '$lib/prisma';
 import { getAllLocations } from './_db';
+import { slugify } from '$lib/dbUtils';
 
 export const get = async () => {
 	const locations = await getAllLocations();
@@ -13,10 +14,12 @@ export const get = async () => {
 
 export const post = async ({ request }) => {
 	const location = await request.json();
+	location.slug = slugify(location.name);
 
 	const newLocation = await prisma.location.create({
 		data: {
-			name: location.name
+			name: location.name,
+			slug: location.slug
 		}
 	});
 	return {

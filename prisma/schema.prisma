@@ -37,12 +37,14 @@ model Entry {
   uid            String    @id @default(cuid())
   owner          User      @relation(fields: [userId], references: [uid])
   userId         String
-  task           String
+  date           DateTime
+  title          String
   location       Location? @relation(fields: [locationUid], references: [uid])
   locationUid    String
   other_location String
+  volunteers     Int
   hours          Float
-  comment        String
+  description    String
   created_at     DateTime  @default(now())
   trails         Trail[]
   photos         Photo[]
@@ -51,6 +53,7 @@ model Entry {
 model Location {
   uid    String  @id @default(cuid())
   name   String  @unique
+  slug   String  @unique
   trails Trail[]
   hours  Entry[]
 }
@@ -58,8 +61,9 @@ model Location {
 model Trail {
   uid         String    @id @default(cuid())
   name        String
+  slug        String
   entries     Entry[]
-  Location    Location? @relation(fields: [locationUid], references: [uid])
+  location    Location? @relation(fields: [locationUid], references: [uid])
   locationUid String?
 }
 

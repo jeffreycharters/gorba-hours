@@ -1,11 +1,11 @@
 <script context="module">
-	export const load = async ({ fetch }) => {
-		const res = await fetch('api/locations');
+	export const load = async ({ fetch, params }) => {
+		const res = await fetch(`api/locations/${params.location}/${params.trail}`);
 		const body = await res.json();
 
 		return {
 			props: {
-				locations: body.locations
+				locations: body.trails
 			}
 		};
 	};
@@ -54,7 +54,7 @@
 <ul>
 	{#each locations as location (location.uid)}
 		<li class="my-2">
-			--> <a href="locations/{location.slug}" class="underline">{location.name}</a>
+			--> {location.name}
 			<button
 				on:click={() => removeLocation(location.uid)}
 				class="bg-red-500 py-1 px-2 rounded-lg text-red-50 text-sm"

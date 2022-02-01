@@ -7,7 +7,7 @@ export const handle = async ({ event, resolve }) => {
 	if (cookies.session_id) {
 		const session = await getSessionFromApi(cookies.session_id);
 		if (session) {
-			event.locals.user = { email: session.email };
+			event.locals.user = { email: session.email, uid: session.uid };
 			return resolve(event);
 		}
 	}
@@ -20,7 +20,8 @@ export const getSession = (request) => {
 	return request?.locals?.user
 		? {
 				user: {
-					email: request.locals.user.email
+					email: request.locals.user.email,
+					uid: request.locals.user.uid
 				},
 				authorized: true
 		  }

@@ -1,4 +1,4 @@
-import { verify } from './_utils';
+import { verify } from '$lib/authUtils';
 import { createSession, getUserByEmail } from './_db';
 import { serialize } from 'cookie';
 
