@@ -3,6 +3,14 @@ import cuid from 'cuid';
 
 import { prisma } from '$lib/prisma';
 
+export const getUserByEmail = async (email) => {
+	const existingUsers = await prisma.user.findUnique({
+		where: { email }
+	});
+	if (!existingUsers) return Promise.resolve(null);
+	return Promise.resolve(existingUsers[0]);
+};
+
 export const getUserByEmailOrUsername = async (email, username) => {
 	const existingUsers = await prisma.user.findMany({
 		where: {
