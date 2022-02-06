@@ -45,7 +45,7 @@
 				<label for="email" class="font-bold text-gray-500">Email:</label>
 				<input
 					class="border-2 border-cyan-700 rounded py-2 px-4"
-					type="text"
+					type="email"
 					placeholder="Email"
 					id="email"
 					bind:value={email}

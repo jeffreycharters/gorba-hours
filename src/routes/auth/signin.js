@@ -2,20 +2,23 @@ import { verify } from '$lib/authUtils';
 import { createSession, getUserByEmail } from './_db';
 import { serialize } from 'cookie';
 
+const incorrectEmailOrPassword = {
+	status: 401,
+	body: {
+		message: 'Incorrect email or password.'
+	}
+};
+
 export const post = async ({ request }) => {
 	const { email, password } = await request.json();
 
 	const user = await getUserByEmail(email);
 
+	if (!user) return incorrectEmailOrPassword;
 	const goodPassword = await verify(password, user.password);
 
 	if (!user || !goodPassword) {
-		return {
-			status: 401,
-			body: {
-				message: 'Incorrect email or password.'
-			}
-		};
+		return incorrectEmailOrPassword;
 	}
 
 	const { uid } = await createSession(email);

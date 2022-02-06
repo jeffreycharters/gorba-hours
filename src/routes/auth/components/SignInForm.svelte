@@ -1,7 +1,9 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
-	let email = 'jeffrey@example.com';
-	let password = 'testpass123';
+	let email = '';
+	let password = '';
+
+	let flash = null;
 
 	let dispatch = createEventDispatcher();
 
@@ -19,6 +21,9 @@
 
 		if (res.ok) {
 			dispatch('success');
+		} else if (res.status === 401) {
+			const body = await res.json();
+			flash = body.message;
 		}
 	};
 </script>
@@ -49,6 +54,12 @@
 					bind:value={password}
 				/>
 			</div>
+
+			{#if flash}
+				<div class="text-red-600 font-bold px-2">
+					{flash}
+				</div>
+			{/if}
 
 			<button
 				class="border-2 border-cyan-700 py-2 px-4 bg-cyan-100 text-cyan-800 hover:bg-cyan-200 rounded font-bold text-lg"

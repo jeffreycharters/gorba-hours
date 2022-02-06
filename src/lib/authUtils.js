@@ -13,6 +13,7 @@ export const hashPassword = (plaintext) => {
 
 export const verify = (password, hash) => {
 	return new Promise((resolve, reject) => {
+		if (!hash) reject('No password supplied');
 		const [salt, key] = hash.split(':');
 		crypto.scrypt(password, salt, 64, (err, derivedKey) => {
 			if (err) reject(err);
