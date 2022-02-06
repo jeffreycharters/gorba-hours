@@ -1,5 +1,5 @@
 import { verify } from '$lib/authUtils';
-import { createSession, getUserByEmail } from './_db';
+import { createSession, getUserByEmailorUsername } from './_db';
 import { serialize } from 'cookie';
 
 const incorrectEmailOrPassword = {
