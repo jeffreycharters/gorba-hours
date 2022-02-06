@@ -2,7 +2,32 @@ import { createSession, getUserByEmail, registerUser } from './_db';
 import { serialize } from 'cookie';
 
 export const post = async ({ request }) => {
-	const { username, email, password } = await request.json();
+	let body;
+	try {
+		body = await request.json();
+	} catch {
+		body = undefined;
+	}
+	if (!body?.username || !body?.email || !body?.password) {
+		return {
+			status: 400,
+			body: {
+				message: 'Missing username, email or password.'
+			}
+		};
+	}
+
+	const { username, email, password } = body;
+
+	emailRegex =
+		/^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i;
+	emailValid = emailRegex.test(email);
+	if (!emailValid) {
+		return {
+			status: 400,
+			body: { message: 'Malformed email address.' }
+		};
+	}
 
 	const user = await getUserByEmail(email);
 
