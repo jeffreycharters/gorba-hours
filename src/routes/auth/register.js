@@ -1,5 +1,6 @@
-import { createSession, getUserByEmail, registerUser } from './_db';
+import { createSession, getUserByEmailOrUsername, registerUser } from './_db';
 import { serialize } from 'cookie';
+import { emailRegex } from '$lib/authUtils';
 
 export const post = async ({ request }) => {
 	let body;
@@ -19,8 +20,6 @@ export const post = async ({ request }) => {
 
 	const { username, email, password } = body;
 
-	const emailRegex =
-		/^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i;
 	const emailValid = emailRegex.test(email);
 	if (!emailValid) {
 		return {
@@ -29,7 +28,7 @@ export const post = async ({ request }) => {
 		};
 	}
 
-	const user = await getUserByEmail(email);
+	const user = await getUserByEmailOrUsername(email, username);
 
 	if (user) {
 		return {
