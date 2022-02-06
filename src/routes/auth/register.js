@@ -21,7 +21,7 @@ export const post = async ({ request }) => {
 
 	const emailRegex =
 		/^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i;
-	emailValid = emailRegex.test(email);
+	const emailValid = emailRegex.test(email);
 	if (!emailValid) {
 		return {
 			status: 400,
