@@ -28,7 +28,7 @@ export const post = async ({ request }) => {
 		};
 	}
 
-	const user = await getUserByEmailOrUsername(email, username);
+	const user = await getUserByEmail(email);
 
 	if (user) {
 		return {
