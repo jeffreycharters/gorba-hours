@@ -1,14 +1,16 @@
 <script>
+	import Counter from './Counter.svelte';
 	let trails;
 	let location;
 	let trailView = false;
+	let volunteers = 1;
 
 	$: showLocationOtherField = location === 'other';
 
 	const getLocations = async () => {
 		const res = await fetch('/api/locations');
 		const body = await res.json();
-		return body.locations;
+		return [...body.locations, { name: 'Other', slug: 'other' }];
 	};
 	let locations = getLocations();
 
@@ -21,8 +23,8 @@
 
 	const formatCurrentDate = (dateObj) => {
 		const year = dateObj.getFullYear();
-		const month = dateObj.getMonth() + 1 <= 9 ? `0${dateObj.getMonth() + 1}` : dateObj.getMonth();
-		const day = dateObj.getDate();
+		const month = dateObj.getMonth() + 1 < 10 ? `0${dateObj.getMonth() + 1}` : dateObj.getMonth();
+		const day = dateObj.getDate() < 10 ? `0${dateObj.getDate()}` : dateObj.getDate();
 		return `${year}-${month}-${day}`;
 	};
 
@@ -33,8 +35,8 @@
 
 <form>
 	<div class="flex flex-col gap-3 mt-4">
-		<div>
-			<label for="title">Title: </label>
+		<div class="flex flex-col">
+			<label for="title" class="text-lg font-bold ml-1">Title</label>
 			<input
 				type="text"
 				id="title"
@@ -42,12 +44,12 @@
 				placeholder="Short Description"
 			/>
 		</div>
-		<div>
-			<label for="date">Date:</label>
+		<div class="flex flex-col">
+			<label for="date" class="text-lg font-bold ml-1">Date</label>
 			<input type="date" value={today} class="border-2 py-1 px-2 rounded-md" id="date" />
 		</div>
 		<div class="mt-6">
-			Location:
+			<div class="text-lg font-bold ml-1">Location</div>
 			{#await locations}
 				<div>Awaiting locations..</div>
 			{:then locs}
@@ -63,7 +65,9 @@
 								bind:group={location}
 								on:change={() => fetchTrails(loc.slug)}
 							/>
-							<label class="py-2 px-6 border-2 rounded-lg location" for={loc.name}>{loc.name}</label
+							<label
+								class="py-1 px-3 border-2 rounded-md  whitespace-nowrap location"
+								for={loc.name}>{loc.name}</label
 							>
 						</div>
 					{/each}
@@ -83,13 +87,15 @@
 				{/if}
 			{/await}
 
-			<div class="mt-6">
-				<label for="volunteers">Number of volunteers present:</label>
-				<input type="number" id="volunteers" class="w-24 rounded-lg border-2 border-gray-300" />
-			</div>
+			<Counter {volunteers} />
+
 			<div class="mt-6">
 				<label for="hours">Total person-hours:</label>
-				<input type="number" id="hours" class="w-24 rounded-lg border-2 border-gray-300" />
+				<input
+					type="number"
+					id="hours"
+					class="w-24 rounded-lg border-2 border-gray-300 shadow-inner-md"
+				/>
 			</div>
 
 			<div class="mt-6 border-2 w-96">
@@ -125,7 +131,7 @@
 			</div>
 			<div class="mt-6">
 				<label for="description">Description (optional):</label><br />
-				<textarea class="border-2 border-gray-300 w-96 h-24" />
+				<textarea class="border-2 border-gray-300 w-96 h-24 shadow-inner-md" />
 			</div>
 		</div>
 	</div>
@@ -140,6 +146,6 @@
 <style lang="postcss">
 	input:checked + label.location,
 	input:checked + label.trail-check {
-		@apply bg-emerald-600 text-emerald-50;
+		@apply bg-emerald-600 text-emerald-50 border-emerald-400;
 	}
 </style>

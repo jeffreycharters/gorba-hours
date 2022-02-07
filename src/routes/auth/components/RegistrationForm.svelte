@@ -5,6 +5,8 @@
 	let email = '';
 	let password = '';
 
+	let flash;
+
 	let dispatch = createEventDispatcher();
 
 	const register = async () => {
@@ -22,6 +24,8 @@
 
 		if (res.ok) {
 			dispatch('success');
+		} else if (res.status === 409) {
+			flash = 'Username or email address is taken.';
 		}
 	};
 </script>
@@ -62,6 +66,12 @@
 					bind:value={password}
 				/>
 			</div>
+
+			{#if flash}
+				<div class="text-red-600 font-bold px-2">
+					{flash}
+				</div>
+			{/if}
 
 			<button
 				class="border-2 border-cyan-700 py-2 px-4 bg-cyan-100 text-cyan-800 hover:bg-cyan-200 rounded font-bold text-lg"

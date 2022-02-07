@@ -12,7 +12,7 @@ export const getUserByEmail = async (email) => {
 };
 
 export const getUserByEmailOrUsername = async (email, username) => {
-	const existingUser = await prisma.user.findFirst({
+	const existingUser = await prisma.user.findMany({
 		where: {
 			OR: [{ email }, { username }]
 		}

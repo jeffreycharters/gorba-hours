@@ -1,4 +1,4 @@
-import { createSession, getUserByEmail, registerUser } from './_db';
+import { createSession, getUserByEmailOrUsername, registerUser } from './_db';
 import { serialize } from 'cookie';
 import { emailRegex } from '$lib/authUtils';
 
@@ -28,7 +28,7 @@ export const post = async ({ request }) => {
 		};
 	}
 
-	const user = await getUserByEmail(email, username);
+	const user = await getUserByEmailOrUsername(email, username);
 
 	if (user) {
 		return {
