@@ -1,9 +1,11 @@
 <script>
 	import Counter from './Counter.svelte';
+	import TrailSelector from './TrailSelector.svelte';
 	let trails;
-	let location;
+	let location = '';
 	let trailView = false;
 	let volunteers = 1;
+	let hours = 1;
 
 	$: showLocationOtherField = location === 'other';
 
@@ -15,6 +17,10 @@
 	let locations = getLocations();
 
 	const fetchTrails = async (location) => {
+		if (location === 'other') {
+			trails = [];
+			return;
+		}
 		const res = await fetch(`/api/locations/${location}`);
 		const body = await res.json();
 
@@ -33,14 +39,14 @@
 
 <h1 class="text-2xl font-bold">Log Volunteer Hours</h1>
 
-<form>
+<form class="w-11/12 mx-auto">
 	<div class="flex flex-col gap-3 mt-4">
 		<div class="flex flex-col">
 			<label for="title" class="text-lg font-bold ml-1">Title</label>
 			<input
 				type="text"
 				id="title"
-				class="border-2 py-1 px-2 rounded-md"
+				class="border-2 py-1 px-2 rounded-md w-full"
 				placeholder="Short Description"
 			/>
 		</div>
@@ -55,7 +61,7 @@
 			{:then locs}
 				<div class="flex justify-start items-baseline">
 					{#each locs as loc (loc.uid)}
-						<div class="m-4">
+						<div class="m-2">
 							<input
 								type="radio"
 								name="location"
@@ -78,7 +84,7 @@
 						Enter the location or choose from existing (optional):
 						<input
 							type="text"
-							class="border-2 border-gray-300 rounded-lg reveal-if-active"
+							class="border-2 border-gray-300 rounded-md reveal-if-active"
 							id="location-other"
 							name="location-other"
 							placeholder="Start typing to see others"
@@ -87,65 +93,42 @@
 				{/if}
 			{/await}
 
-			<Counter {volunteers} />
+			<div class="mt-6 flex flex-col">
+				<label for="volunteers" class="text-lg font-bold ml-1">Volunteer Count</label>
+				<div class="ml-2 text-sm">Total number of people involved.</div>
+
+				<Counter counting={volunteers} min="1" steps={[1]} />
+			</div>
+
+			<div class="flex flex-col mt-6">
+				<label for="hours" class="text-lg font-bold ml-1">Person-hours</label>
+				<div class="text-sm ml-2">Total person-hours worked.</div>
+				<Counter counting={hours} min="0.25" steps={[0.5, 2]} />
+			</div>
+
+			{#if location != 'other' && location != ''}
+				<TrailSelector {trailView} {trails} />
+			{/if}
 
 			<div class="mt-6">
-				<label for="hours">Total person-hours:</label>
-				<input
-					type="number"
-					id="hours"
-					class="w-24 rounded-lg border-2 border-gray-300 shadow-inner-md"
+				<label for="description" class="text-lg font-bold ml-1">Description</label> (optional)
+				<textarea
+					class="border-2 border-gray-300 w-11/12 h-24 rounded-md mx-auto"
+					placeholder="For future reference."
 				/>
-			</div>
-
-			<div class="mt-6 border-2 w-96">
-				<button type="button" on:click={() => (trailView = !trailView)}>
-					{#if trailView}
-						Remove all trails
-					{:else}
-						Add trails
-					{/if}
-				</button>
-
-				{#if trailView}
-					<div>Choose trails:</div>
-					{#if trails}
-						<div class="flex">
-							{#each trails as trail (trail.uid)}
-								<div class="m-2">
-									<input
-										type="checkbox"
-										name="trail.slug"
-										id="trail-{trail.slug}"
-										class="w-1 h-1 opacity-0"
-									/>
-									<label
-										for="trail-{trail.slug}"
-										class="p-2 trail-check shadow-md bg-emerald-100 rounded-md">{trail.name}</label
-									>
-								</div>
-							{/each}
-						</div>
-					{/if}
-				{/if}
-			</div>
-			<div class="mt-6">
-				<label for="description">Description (optional):</label><br />
-				<textarea class="border-2 border-gray-300 w-96 h-24 shadow-inner-md" />
 			</div>
 		</div>
 	</div>
 
 	<input
 		type="submit"
-		value="Submit Hours"
-		class="border-2 border-blue-900 bg-blue-200 py-1 px-2 rounded-md"
+		value="Save Entry"
+		class="border-2 border-emerald-300 bg-emerald-100 py-1 px-2 rounded-md text-emerald-800 mt-6 w-11/12 mx-auto"
 	/>
 </form>
 
 <style lang="postcss">
-	input:checked + label.location,
-	input:checked + label.trail-check {
+	input:checked + label.location {
 		@apply bg-emerald-600 text-emerald-50 border-emerald-400;
 	}
 </style>

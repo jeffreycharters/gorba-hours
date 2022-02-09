@@ -1,31 +1,40 @@
 <script>
-	export let volunteers;
+	export let counting;
+	export let max = Infinity;
+	export let min = -Infinity;
+	export let steps = [1];
 
-	const decrement = () => {
-		if (volunteers > 1) --volunteers;
+	steps.reverse();
+
+	const decrement = (amount) => {
+		if (counting - amount > min) counting -= amount;
 	};
 
-	const increment = () => {
-		++volunteers;
+	const increment = (amount) => {
+		if (counting - amount < max) counting += amount;
 	};
 </script>
 
-<div class="mt-6 flex flex-col">
-	<label for="volunteers">Number of volunteers present:</label>
-	<div class="flex flex-row gap-4 mx-auto mt-3">
+<div class="flex flex-row gap-2 mx-auto mt-3">
+	{#each steps as step}
 		<button
-			class="text-2xl border-2 border-gray-300 pt-0 pb-2 px-3 align-baseline rounded-md"
-			on:click={decrement}>-</button
+			type="button"
+			class="text-xs border-2 border-gray-300 px-3 align-baseline rounded-md"
+			on:click={() => decrement(step)}>-{step}</button
 		>
-		<input
-			type="number"
-			bind:value={volunteers}
-			id="volunteers"
-			class="w-16 rounded-lg border-2 border-gray-300 shadow-inner-md p-2 text-center"
-		/>
+	{/each}
+	<input
+		type="number"
+		value={counting}
+		id="volunteers"
+		class="w-16 rounded-lg border-2 border-gray-300 p-2 text-center"
+		step={Math.min(...steps)}
+	/>
+	{#each steps.reverse() as step}
 		<button
-			class="text-2xl border-2 border-gray-300 pt-0 pb-2 px-3 align-baseline rounded-md"
-			on:click={increment}>+</button
+			type="button"
+			class="text-xs border-2 border-gray-300 px-3 align-baseline rounded-md"
+			on:click={() => increment(step)}>+{step}</button
 		>
-	</div>
+	{/each}
 </div>
