@@ -1,17 +1,26 @@
 <script>
-	export let counting;
+	import { createEventDispatcher } from 'svelte';
+	export let count;
 	export let max = Infinity;
 	export let min = -Infinity;
 	export let steps = [1];
 
+	const dispatch = createEventDispatcher();
+
 	steps.reverse();
 
 	const decrement = (amount) => {
-		if (counting - amount > min) counting -= amount;
+		if (count - amount >= min) {
+			count -= amount;
+			dispatch('updateCount', count);
+		}
 	};
 
 	const increment = (amount) => {
-		if (counting - amount < max) counting += amount;
+		if (count - amount <= max) {
+			count += amount;
+			dispatch('updateCount', count);
+		}
 	};
 </script>
 
@@ -25,7 +34,7 @@
 	{/each}
 	<input
 		type="number"
-		value={counting}
+		bind:value={count}
 		id="volunteers"
 		class="w-16 rounded-lg border-2 border-gray-300 p-2 text-center"
 		step={Math.min(...steps)}

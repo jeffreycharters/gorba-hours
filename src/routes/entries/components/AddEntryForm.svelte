@@ -1,13 +1,21 @@
 <script>
+	import { slide } from 'svelte/transition';
 	import Counter from './Counter.svelte';
 	import TrailSelector from './TrailSelector.svelte';
-	let trails;
-	let location = '';
-	let trailView = false;
-	let volunteers = 1;
-	let hours = 1;
 
-	$: showLocationOtherField = location === 'other';
+	let allTrails;
+
+	const form = {
+		location: '',
+		volunteers: 1,
+		hours: 1,
+		title: '',
+		otherLocation: '',
+		description: '',
+		trails: []
+	};
+
+	$: showLocationOtherField = form.location === 'other';
 
 	const getLocations = async () => {
 		const res = await fetch('/api/locations');
@@ -18,13 +26,13 @@
 
 	const fetchTrails = async (location) => {
 		if (location === 'other') {
-			trails = [];
+			allTrails = [];
 			return;
 		}
-		const res = await fetch(`/api/locations/${location}`);
+		const res = await fetch(`/api/locations/${form.location}`);
 		const body = await res.json();
 
-		trails = body.trails;
+		allTrails = body.trails;
 	};
 
 	const formatCurrentDate = (dateObj) => {
@@ -34,62 +42,76 @@
 		return `${year}-${month}-${day}`;
 	};
 
-	const today = formatCurrentDate(new Date());
+	let date = formatCurrentDate(new Date());
+
+	const submitEntry = async () => {
+		const res = await fetch('/api/entries', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ form })
+		});
+	};
 </script>
 
-<h1 class="text-2xl font-bold">Log Volunteer Hours</h1>
+<h1 class="text-2xl font-bold mx-2">Log Volunteer Hours</h1>
 
-<form class="w-11/12 mx-auto">
+<form class="w-11/12 mx-auto" method="post" on:submit|preventDefault={submitEntry}>
 	<div class="flex flex-col gap-3 mt-4">
 		<div class="flex flex-col">
 			<label for="title" class="text-lg font-bold ml-1">Title</label>
 			<input
 				type="text"
+				name="title"
 				id="title"
 				class="border-2 py-1 px-2 rounded-md w-full"
 				placeholder="Short Description"
+				bind:value={form.title}
 			/>
 		</div>
 		<div class="flex flex-col">
 			<label for="date" class="text-lg font-bold ml-1">Date</label>
-			<input type="date" value={today} class="border-2 py-1 px-2 rounded-md" id="date" />
+			<input type="date" bind:value={date} class="border-2 py-1 px-2 rounded-md" id="date" />
 		</div>
 		<div class="mt-6">
 			<div class="text-lg font-bold ml-1">Location</div>
 			{#await locations}
 				<div>Awaiting locations..</div>
 			{:then locs}
-				<div class="flex justify-start items-baseline">
+				<div class="flex fex-row justify-evenly items-baseline gap-1">
 					{#each locs as loc (loc.uid)}
-						<div class="m-2">
+						<div class="my-2 inline-block">
 							<input
 								type="radio"
 								name="location"
 								id={loc.name}
 								value={loc.slug}
 								class="opacity-0 w-1 h-1"
-								bind:group={location}
+								bind:group={form.location}
 								on:change={() => fetchTrails(loc.slug)}
 							/>
-							<label
-								class="py-1 px-3 border-2 rounded-md  whitespace-nowrap location"
-								for={loc.name}>{loc.name}</label
+							<label class="py-2 px-4 border-2 rounded-md whitespace-nowrap location" for={loc.name}
+								>{loc.name}</label
 							>
 						</div>
 					{/each}
 				</div>
 
 				{#if showLocationOtherField}
-					<div>
-						Enter the location or choose from existing (optional):
-						<input
-							type="text"
-							class="border-2 border-gray-300 rounded-md reveal-if-active"
-							id="location-other"
-							name="location-other"
-							placeholder="Start typing to see others"
-						/>
+					<div transition:slide={{ duration: 200 }} class="mt-2 ml-4">
+						Specify location <span class="text-gray-400">(optional)</span>:
+						<div class="autocomplete">
+							<input
+								type="text"
+								class="border-2 border-gray-300 rounded-md reveal-if-active"
+								id="location-other"
+								name="location-other"
+								placeholder="Start typing to see others"
+								bind:value={form.otherLocation}
+							/>
+						</div>
 					</div>
+				{:else}
+					<div />
 				{/if}
 			{/await}
 
@@ -97,17 +119,31 @@
 				<label for="volunteers" class="text-lg font-bold ml-1">Volunteer Count</label>
 				<div class="ml-2 text-sm">Total number of people involved.</div>
 
-				<Counter counting={volunteers} min="1" steps={[1]} />
+				<Counter
+					count={form.volunteers}
+					min="1"
+					steps={[1]}
+					on:updateCount={(e) => {
+						form.volunteers = e.detail;
+					}}
+				/>
 			</div>
 
 			<div class="flex flex-col mt-6">
 				<label for="hours" class="text-lg font-bold ml-1">Person-hours</label>
 				<div class="text-sm ml-2">Total person-hours worked.</div>
-				<Counter counting={hours} min="0.25" steps={[0.5, 2]} />
+				<Counter
+					count={form.hours}
+					min="0.25"
+					steps={[0.5, 2]}
+					on:updateCount={(e) => {
+						form.hours = e.detail;
+					}}
+				/>
 			</div>
 
-			{#if location != 'other' && location != ''}
-				<TrailSelector {trailView} {trails} />
+			{#if form.location != 'other' && form.location != ''}
+				<TrailSelector {allTrails} />
 			{/if}
 
 			<div class="mt-6">
@@ -115,6 +151,7 @@
 				<textarea
 					class="border-2 border-gray-300 w-11/12 h-24 rounded-md mx-auto"
 					placeholder="For future reference."
+					bind:value={form.description}
 				/>
 			</div>
 		</div>
