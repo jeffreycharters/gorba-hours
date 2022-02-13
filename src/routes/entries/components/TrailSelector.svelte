@@ -81,7 +81,7 @@
 					onoutroend={checkNoneSelected}
 					name={trail.slug}
 					id={trail.slug}
-					class="w-full bg-slate-200 my-1 p-2 border-2 border-slate-300 rounded-md"
+					class="w-full bg-slate-50 my-1 p-2 border-2 border-slate-200 rounded-md text-slate-600"
 					on:click={addTrail}
 				>
 					{trail.name}

@@ -2,6 +2,7 @@
 	import { slide } from 'svelte/transition';
 	import Counter from './Counter.svelte';
 	import TrailSelector from './TrailSelector.svelte';
+	import TagSelector from './TagSelector.svelte';
 
 	let allTrails;
 
@@ -23,6 +24,13 @@
 		return [...body.locations, { name: 'Other', slug: 'other' }];
 	};
 	let locations = getLocations();
+
+	const getKeywords = async () => {
+		const res = await fetch('/api/entries/keywords');
+		const body = await res.json();
+		return body.keywords;
+	};
+	let allKeywords = getKeywords();
 
 	const fetchTrails = async (location) => {
 		if (location === 'other') {
@@ -117,7 +125,7 @@
 
 			<div class="mt-6 flex flex-col">
 				<label for="volunteers" class="text-lg font-bold ml-1">Volunteer Count</label>
-				<div class="ml-2 text-sm">Total number of people involved.</div>
+				<div class="ml-2 text-sm">Total number of volunteers involved.</div>
 
 				<Counter
 					count={form.volunteers}
@@ -130,8 +138,8 @@
 			</div>
 
 			<div class="flex flex-col mt-6">
-				<label for="hours" class="text-lg font-bold ml-1">Person-hours</label>
-				<div class="text-sm ml-2">Total person-hours worked.</div>
+				<label for="hours" class="text-lg font-bold ml-1">Volunteer Hours</label>
+				<div class="text-sm ml-2">Total volunteer-hours worked.</div>
 				<Counter
 					count={form.hours}
 					min="0.25"
@@ -145,6 +153,8 @@
 			{#if form.location != 'other' && form.location != ''}
 				<TrailSelector {allTrails} />
 			{/if}
+
+			<TagSelector {allKeywords} />
 
 			<div class="mt-6">
 				<label for="description" class="text-lg font-bold ml-1">Description</label> (optional)
