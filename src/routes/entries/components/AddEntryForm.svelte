@@ -55,7 +55,7 @@
 
 <h1 class="text-2xl font-bold mx-2">Log Volunteer Hours</h1>
 
-<form class="w-11/12 mx-auto" method="post" on:submit|preventDefault={submitEntry}>
+<form class="w-11/12 my-2 mx-auto" method="post" on:submit|preventDefault={submitEntry}>
 	<div class="flex flex-col gap-3 mt-4">
 		<div class="flex flex-col">
 			<label for="title" class="text-lg font-bold ml-1">Title</label>
@@ -149,7 +149,7 @@
 			<div class="mt-6">
 				<label for="description" class="text-lg font-bold ml-1">Description</label> (optional)
 				<textarea
-					class="border-2 border-gray-300 w-11/12 h-24 rounded-md mx-auto"
+					class="border-2 border-gray-300 w-full h-24 rounded-md mx-auto"
 					placeholder="For future reference."
 					bind:value={form.description}
 				/>
@@ -160,12 +160,12 @@
 	<input
 		type="submit"
 		value="Save Entry"
-		class="border-2 border-emerald-300 bg-emerald-100 py-1 px-2 rounded-md text-emerald-800 mt-6 w-11/12 mx-auto"
+		class="border-2 border-emerald-600 bg-emerald-100 py-1 px-2 rounded-md text-emerald-700 mt-6 w-full mx-auto font-bold"
 	/>
 </form>
 
 <style lang="postcss">
 	input:checked + label.location {
-		@apply bg-emerald-600 text-emerald-50 border-emerald-400;
+		@apply bg-emerald-500 text-white border-emerald-900;
 	}
 </style>

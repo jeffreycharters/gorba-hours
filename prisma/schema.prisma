@@ -46,6 +46,7 @@ model Entry {
   hours          Float
   description    String
   created_at     DateTime  @default(now())
+  keywords       Keyword[]
   trails         Trail[]
   photos         Photo[]
 }
@@ -65,6 +66,13 @@ model Trail {
   entries     Entry[]
   location    Location? @relation(fields: [locationUid], references: [uid])
   locationUid String?
+}
+
+model Keyword {
+  uid     String  @id @default(cuid())
+  keyword String  @unique
+  active  Boolean
+  entries Entry[]
 }
 
 model Photo {

@@ -28,7 +28,7 @@
 </script>
 
 <form on:submit|preventDefault={updateUser}>
-	<div class="border-2 background-gray-50 rounded-md w-6/12 py-2 px-4 inset-1 ">
+	<div class="border-2 background-gray-50 rounded-md w-full py-2 px-4 inset-1 ">
 		<div class="flex justify-between">
 			<div class="text-lg text-gray-500 font-bold tracking-wide">{user.username}</div>
 			<div>Admin: <input type="checkbox" bind:checked={isAdmin} /></div>
