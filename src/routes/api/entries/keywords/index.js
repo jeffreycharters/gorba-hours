@@ -12,7 +12,7 @@ export const get = async () => {
 
 export const post = async ({ request }) => {
 	const keyword = await request.json();
-	const newKeyword = createKeyword(keyword.keyword);
+	const newKeyword = createKeyword(keyword.keyword.toLowerCase());
 	return {
 		status: 200,
 		body: { keyword: await newKeyword }
