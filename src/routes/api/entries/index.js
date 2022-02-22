@@ -36,10 +36,10 @@ export const post = async ({ request }) => {
 
 	const dateObject = new Date(form.date);
 
-	trailConnect = [];
+	const trailConnect = [];
 	form.trails.forEach((t) => trailConnect.push({ uid: t }));
 
-	keywordConnect = [];
+	const keywordConnect = [];
 	form.tags.forEach((t) => keywordConnect.push({ uid: t }));
 
 	const newEntry = await prisma.entry.create({
