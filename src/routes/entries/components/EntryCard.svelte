@@ -20,13 +20,13 @@
 </script>
 
 <div class="flex flex-col m-1 p-2 shadow rounded-md my-4">
-	<div class="font-bold text-md text-emerald-700">
-		{entryDate.toLocaleDateString('en-CA', dateOptions)}
-	</div>
-	<div class="text-2xl font-bold text-gray-400 pb-1 mb-2 border-b-2 border-b-gray-200">
+	<div class="text-2xl font-bold text-gray-500 tracking-wide">
 		{entry.title}
 	</div>
-	<div class="flex min-w-full justify-between">
+	<div class="font-bold text-md text-emerald-700 border-b-2 border-b-gray-200">
+		{entryDate.toLocaleDateString('en-CA', dateOptions)}
+	</div>
+	<div class="flex min-w-full justify-between mt-4">
 		<div class="flex text-gray-400 font-bold pr-2 text-sm items-center">
 			<img src="/images/icon-user.svg" alt="user icon" class="h-4 mr-1" />{entry.owner.username}
 		</div>
@@ -42,13 +42,12 @@
 		</div>
 	</div>
 
-	<div class="flex flex-row flex-nowrap w-full justify-between items-center mt-2">
+	<div class="flex flex-row flex-nowrap w-full justify-between items-baseline mt-2">
+		<div class="bg-emerald-200 h-1" style="flex-grow: 1;" />
 		<div class="text-center px-4 text-emerald-700 font-bold">
 			{entry.location.name}
 		</div>
-		<div class="grow bg-emerald-200 h-1">
-			<span class="w-full bg-emerald-700" />
-		</div>
+		<div class="grow bg-emerald-200 h-1" style="flex-grow: 5;" />
 	</div>
 
 	<div class="flex flex-row flex-wrap">
