@@ -3,7 +3,6 @@
 	import Counter from './Counter.svelte';
 	import TrailSelector from './TrailSelector.svelte';
 	import TagSelector from './TagSelector.svelte';
-	import log from 'tailwindcss/lib/util/log';
 
 	export let user;
 
