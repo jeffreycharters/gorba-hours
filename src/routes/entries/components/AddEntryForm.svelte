@@ -3,17 +3,23 @@
 	import Counter from './Counter.svelte';
 	import TrailSelector from './TrailSelector.svelte';
 	import TagSelector from './TagSelector.svelte';
+	import log from 'tailwindcss/lib/util/log';
+
+	export let user;
 
 	let allTrails;
 
 	const form = {
+		user: user.email,
+		title: 'Testing',
+		date: '2022-02-21',
 		location: '',
 		volunteers: 1,
 		hours: 1,
-		title: '',
 		otherLocation: '',
 		description: '',
-		trails: []
+		trails: [],
+		tags: []
 	};
 
 	$: showLocationOtherField = form.location === 'other';
@@ -21,7 +27,8 @@
 	const getLocations = async () => {
 		const res = await fetch('/api/locations');
 		const body = await res.json();
-		return [...body.locations, { name: 'Other', slug: 'other' }];
+
+		return body.locations;
 	};
 	let locations = getLocations();
 
@@ -37,7 +44,7 @@
 			allTrails = [];
 			return;
 		}
-		const res = await fetch(`/api/locations/${form.location}`);
+		const res = await fetch(`/api/locations/${location}`);
 		const body = await res.json();
 
 		allTrails = body.trails;
@@ -78,7 +85,7 @@
 		</div>
 		<div class="flex flex-col">
 			<label for="date" class="text-lg font-bold ml-1">Date</label>
-			<input type="date" bind:value={date} class="border-2 py-1 px-2 rounded-md" id="date" />
+			<input type="date" bind:value={form.date} class="border-2 py-1 px-2 rounded-md" id="date" />
 		</div>
 		<div class="mt-6">
 			<div class="text-lg font-bold ml-1">Location</div>
@@ -92,7 +99,7 @@
 								type="radio"
 								name="location"
 								id={loc.name}
-								value={loc.slug}
+								value={loc.uid}
 								class="opacity-0 w-1 h-1"
 								bind:group={form.location}
 								on:change={() => fetchTrails(loc.slug)}
@@ -105,7 +112,7 @@
 				</div>
 
 				{#if showLocationOtherField}
-					<div transition:slide={{ duration: 200 }} class="mt-2 ml-4">
+					<div transition:slide={{ duration: 200 }} class="mt-2 mx-auto w-fit">
 						Specify location <span class="text-gray-400">(optional)</span>:
 						<div class="autocomplete">
 							<input
@@ -151,10 +158,10 @@
 			</div>
 
 			{#if form.location != 'other' && form.location != ''}
-				<TrailSelector {allTrails} />
+				<TrailSelector {allTrails} on:updateTrails={(e) => (form.trails = e.detail)} />
 			{/if}
 
-			<TagSelector {allKeywords} />
+			<TagSelector {allKeywords} on:updateTags={(e) => (form.tags = e.detail)} />
 
 			<div class="mt-6">
 				<label for="description" class="text-lg font-bold ml-1">Description</label> (optional)

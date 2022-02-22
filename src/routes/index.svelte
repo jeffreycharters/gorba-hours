@@ -28,7 +28,7 @@
 	};
 </script>
 
-<div class="flex flex-row flex-wrap gap-4">
+<div class="flex w-full justify-center">
 	{#if signin}
 		<SignInForm on:success={redirectToMenu} on:toggle={toggleSignin} />
 	{:else}

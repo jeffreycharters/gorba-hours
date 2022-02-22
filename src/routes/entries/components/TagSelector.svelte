@@ -1,7 +1,14 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
+
 	export let allKeywords;
 	let selectedKeywords = [];
-	$: console.log(selectedKeywords);
+
+	const dispatch = createEventDispatcher();
+
+	const handleChange = () => {
+		dispatch('updateTags', selectedKeywords);
+	};
 </script>
 
 <div class="mt-6 px-2 border-2 w-full rounded-md">
@@ -23,6 +30,7 @@
 						class="w-0 h-0 opacity-0"
 						id="keyword-{keyword.uid}"
 						value={keyword.uid}
+						on:change={handleChange}
 					/>
 					<label
 						for="keyword-{keyword.uid}"

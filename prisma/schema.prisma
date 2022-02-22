@@ -41,7 +41,7 @@ model Entry {
   title          String
   location       Location? @relation(fields: [locationUid], references: [uid])
   locationUid    String
-  other_location String
+  other_location String?
   volunteers     Int
   hours          Float
   description    String
@@ -60,12 +60,12 @@ model Location {
 }
 
 model Trail {
-  uid         String    @id @default(cuid())
+  uid         String   @id @default(cuid())
   name        String
   slug        String
   entries     Entry[]
-  location    Location? @relation(fields: [locationUid], references: [uid])
-  locationUid String?
+  location    Location @relation(fields: [locationUid], references: [uid])
+  locationUid String
 }
 
 model Keyword {

@@ -1,8 +1,11 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
 	import { flip } from 'svelte/animate';
-	import { crossfade, fade } from 'svelte/transition';
+	import { crossfade } from 'svelte/transition';
 
 	export let allTrails = [];
+
+	const dispatch = createEventDispatcher();
 	let selectedTrails = [];
 
 	let animationDuration = 600;
@@ -25,6 +28,10 @@
 		const targetTrail = allTrails.find((t) => t.slug === trailSlug);
 		remainingTrails = remainingTrails.filter((t) => t.slug !== trailSlug);
 		selectedTrails = sortArrayByValue([...selectedTrails, targetTrail], 'slug');
+		dispatch(
+			'updateTrails',
+			selectedTrails.map((t) => t.uid)
+		);
 	};
 
 	const removeTrail = (e) => {
@@ -32,6 +39,10 @@
 		const targetTrail = allTrails.find((t) => t.slug === trailSlug);
 		selectedTrails = selectedTrails.filter((t) => t.slug !== trailSlug);
 		remainingTrails = sortArrayByValue([...remainingTrails, targetTrail], 'slug');
+		dispatch(
+			'updateTrails',
+			selectedTrails.map((t) => t.uid)
+		);
 	};
 
 	const removeNoneSelected = () => {
