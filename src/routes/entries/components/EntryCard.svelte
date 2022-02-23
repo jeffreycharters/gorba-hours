@@ -19,8 +19,8 @@
 	};
 </script>
 
-<div class="flex flex-col m-1 p-2 shadow rounded-md my-4">
-	<div class="text-2xl font-bold text-gray-500 tracking-wide">
+<div class="flex flex-col py-4 px-3 shadow rounded-md bg-white">
+	<div class="text-2xl font-bold text-emerald-600 tracking-wide">
 		{entry.title}
 	</div>
 	<div class="font-bold text-md text-emerald-700 border-b-2 border-b-gray-200">
@@ -45,7 +45,13 @@
 	<div class="flex flex-row flex-nowrap w-full justify-between items-baseline mt-2">
 		<div class="bg-emerald-200 h-1" style="flex-grow: 1;" />
 		<div class="text-center px-4 text-emerald-700 font-bold">
-			{entry.location.name}
+			{#if entry.location.name === 'Other'}
+				{entry.other_location}
+			{:else if entry.location.name}
+				{entry.location.name}
+			{:else}
+				Unknown Location
+			{/if}
 		</div>
 		<div class="grow bg-emerald-200 h-1" style="flex-grow: 5;" />
 	</div>
@@ -60,11 +66,11 @@
 		{/each}
 	</div>
 
-	<div class="p-2 text-gray-700 text-sm font-semibold bg-gray-100 my-2 rounded-md">
+	<div class="p-3 text-gray-700 text-sm font-semibold bg-gray-100 my-4 rounded-md">
 		{entry.description || 'No description'}<br />
 	</div>
 
-	<div class="flex flex-row flex-wrap">
+	<div class="flex flex-row flex-wrap justify-end">
 		{#each entry.keywords as k (k.uid)}
 			<div class="flex flex-row flex-nowrap text-sm justify-start items-center">
 				<img src="/images/icon-tag.svg" class="h-3" alt="keyword tag" />

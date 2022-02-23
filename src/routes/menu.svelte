@@ -16,6 +16,7 @@
 </script>
 
 <script>
+	export let user;
 	const logout = async () => {
 		const res = await fetch('/auth/signout');
 		if (res.ok) {

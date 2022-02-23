@@ -16,6 +16,9 @@
 	export let entries;
 </script>
 
-{#each entries as entry (entry.uid)}
-	<EntryCard {entry} />
-{/each}
+<div class="bg-gray-400 p-1 flex flex-col gap-2">
+	<div class="bg-white rounded-md py-2 px-4 text-3xl font-bold text-emerald-900">Entries - all</div>
+	{#each entries as entry (entry.uid)}
+		<EntryCard {entry} />
+	{/each}
+</div>

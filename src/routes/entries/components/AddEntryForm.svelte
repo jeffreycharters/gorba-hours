@@ -7,11 +7,13 @@
 	export let user;
 
 	let allTrails;
+	let showLocationOtherField = false;
+	let otherLocations = [];
 
 	const form = {
 		user: user.email,
-		title: 'Testing',
-		date: '2022-02-21',
+		title: '',
+		date: '',
 		location: '',
 		volunteers: 1,
 		hours: 1,
@@ -21,12 +23,15 @@
 		tags: []
 	};
 
-	$: showLocationOtherField = form.location === 'other';
+	const fetchOtherLocations = async () => {
+		const res = await fetch('/api/locations/other');
+		const body = await res.json();
+		return body.otherLocations;
+	};
 
 	const getLocations = async () => {
 		const res = await fetch('/api/locations');
 		const body = await res.json();
-
 		return body.locations;
 	};
 	let locations = getLocations();
@@ -41,11 +46,16 @@
 	const fetchTrails = async (location) => {
 		if (location === 'other') {
 			allTrails = [];
-			return;
+			showLocationOtherField = true;
+			if (otherLocations.length === 0) {
+				const fetchedLocations = await fetchOtherLocations();
+				otherLocations = fetchedLocations.map((l) => l.other_location);
+			}
+			return true;
 		}
 		const res = await fetch(`/api/locations/${location}`);
 		const body = await res.json();
-
+		showLocationOtherField = false;
 		allTrails = body.trails;
 	};
 
@@ -56,7 +66,7 @@
 		return `${year}-${month}-${day}`;
 	};
 
-	let date = formatCurrentDate(new Date());
+	form.date = formatCurrentDate(new Date());
 
 	const submitEntry = async () => {
 		const res = await fetch('/api/entries', {
@@ -65,11 +75,66 @@
 			body: JSON.stringify({ form })
 		});
 	};
+
+	const search = (string) => {
+		let results = [];
+		const val = string.toLowerCase();
+
+		for (let i = 0; i < otherLocations.length; i++) {
+			if (otherLocations[i].toLowerCase().indexOf(val) > -1) {
+				results.push(otherLocations[i]);
+			}
+		}
+
+		return results;
+	};
+
+	const searchHandler = (e) => {
+		const inputVal = e.currentTarget.value;
+		let results = [];
+		if (inputVal.length > 0) {
+			results = search(inputVal);
+		}
+		showSuggestions(results, inputVal);
+	};
+
+	const showSuggestions = (results, inputVal) => {
+		const suggestions = document.querySelector('.suggestions ul');
+		suggestions.innerHTML = '';
+
+		if (results.length > 0) {
+			for (let i = 0; i < results.length; i++) {
+				let item = results[i];
+				const match = item.match(new RegExp(inputVal, 'i'));
+				item = item.replace(match[0], `<strong>${match[0]}</strong>`);
+				suggestions.innerHTML += `<li class="text-emerald-600 py-1 my-1 px-4 hover:bg-slate-200 rounded-md border-2">${item}</li>`;
+			}
+			suggestions.classList.add('has-suggestions');
+		} else {
+			results = [];
+			suggestions.innerHTML = '';
+			suggestions.classList.remove('has-suggestions');
+		}
+	};
+
+	const useSuggestion = (e) => {
+		const suggestions = document.querySelector('.suggestions ul');
+		const input = document.getElementById('location-other');
+		input.value = e.target.innerText;
+		input.focus();
+		suggestions.innerHTML = '';
+		suggestions.classList.remove('has-suggestions');
+	};
 </script>
 
 <h1 class="text-2xl font-bold mx-2">Log Volunteer Hours</h1>
 
-<form class="w-11/12 my-2 mx-auto" method="post" on:submit|preventDefault={submitEntry}>
+<form
+	class="w-11/12 my-2 mx-auto"
+	method="post"
+	on:submit|preventDefault={submitEntry}
+	autocomplete="off"
+>
 	<div class="flex flex-col gap-3 mt-4">
 		<div class="flex flex-col">
 			<label for="title" class="text-lg font-bold ml-1">Title</label>
@@ -111,17 +176,21 @@
 				</div>
 
 				{#if showLocationOtherField}
-					<div transition:slide={{ duration: 200 }} class="mt-2 mx-auto w-fit">
+					<div transition:slide={{ duration: 200 }} class="mt-2 w-full">
 						Specify location <span class="text-gray-400">(optional)</span>:
 						<div class="autocomplete">
 							<input
 								type="text"
-								class="border-2 border-gray-300 rounded-md reveal-if-active"
+								class="w-full border-2 border-gray-300 rounded-md reveal-if-active"
 								id="location-other"
 								name="location-other"
 								placeholder="Start typing to see others"
 								bind:value={form.otherLocation}
+								on:keyup={searchHandler}
 							/>
+							<div class="suggestions relative w-full">
+								<ul on:click={useSuggestion} class="u-list absolute bg-white w-full opacity-95" />
+							</div>
 						</div>
 					</div>
 				{:else}

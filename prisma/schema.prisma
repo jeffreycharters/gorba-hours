@@ -39,7 +39,7 @@ model Entry {
   userId         String
   date           DateTime
   title          String
-  location       Location? @relation(fields: [locationUid], references: [uid])
+  location       Location  @relation(fields: [locationUid], references: [uid])
   locationUid    String
   other_location String?
   volunteers     Int
