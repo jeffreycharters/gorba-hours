@@ -36,12 +36,12 @@
 	};
 	let locations = getLocations();
 
-	const getKeywords = async () => {
+	const fetchKeywords = async () => {
 		const res = await fetch('/api/entries/keywords');
 		const body = await res.json();
-		return body.keywords;
+		return body.keywords.filter((k) => k.active == true);
 	};
-	let allKeywords = getKeywords();
+	let allKeywords = fetchKeywords();
 
 	const fetchTrails = async (location) => {
 		if (location === 'other') {

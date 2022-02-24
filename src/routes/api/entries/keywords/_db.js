@@ -5,6 +5,15 @@ export const getAllKeywords = async () => {
 	return Promise.resolve(keywords);
 };
 
+export const getActiveKeywords = async () => {
+	const keywords = await prisma.keyword.findMany({
+		where: {
+			active: true
+		}
+	});
+	return Promise.resolve(keywords);
+};
+
 export const createKeyword = async (keyword) => {
 	let existingKeyword = await prisma.keyword.findUnique({
 		where: {
