@@ -10,7 +10,7 @@
 		<meta name="description" content="Tracking volunteer hours from GORBA executives." />
 		<link rel="icon" href="img/favicon.png" />
 	</head>
-	<body class="md:my-2 md:mx-4">
+	<body class="">
 		<slot />
 	</body>
 </html>

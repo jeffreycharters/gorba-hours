@@ -1,5 +1,5 @@
 import { parse } from 'cookie';
-import { getSession as getSessionFromApi } from './routes/auth/_db';
+import { getSession as getSessionFromApi, getUserByEmail } from './routes/auth/_db';
 
 export const handle = async ({ event, resolve }) => {
 	const cookies = parse(event.request.headers.get('cookie') || '');
@@ -16,12 +16,13 @@ export const handle = async ({ event, resolve }) => {
 	return resolve(event);
 };
 
-export const getSession = (request) => {
+export const getSession = async (request) => {
 	return request?.locals?.user
 		? {
 				user: {
 					email: request.locals.user.email,
-					uid: request.locals.user.uid
+					uid: request.locals.user.uid,
+					user: await getUserByEmail(request.locals.user.email)
 				},
 				authorized: true
 		  }

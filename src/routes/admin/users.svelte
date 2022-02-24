@@ -19,9 +19,9 @@
 	export let users;
 </script>
 
-<h1 class="text-2xl font-bold uppercase">User List</h1>
+<h1 class="text-2xl font-bold uppercase px-2">User List</h1>
 
-<div class="flex flex-col flex-nowrap gap-2">
+<div class="flex flex-col gap-2 m-1 w-11/12">
 	{#each users as user (user.uid)}
 		<UserAdminCard {user} />
 	{/each}

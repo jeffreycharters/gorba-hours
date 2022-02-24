@@ -3,7 +3,8 @@ module.exports = {
 	theme: {
 		extend: {
 			boxShadow: {
-				'inner-md': '2px 2px 2px inset hsl(202, 15%, 90%)'
+				'inner-sm': '1px 1px 1px inset hsla(0, 0%, 0%, 0.4)',
+				'inner-md': '2px 2px 2px inset hsla(0, 0%, 0%, 0.4)'
 			}
 		}
 	},
