@@ -44,7 +44,11 @@
 	<form on:submit|preventDefault={updateUser}>
 		<div class="background-gray-50 rounded-md w-auto py-2 px-4 shadow-inner-sm m-1 border">
 			<div class="flex flex-col justify-between inner-md">
-				<div class="text-2xl text-gray-500 font-bold tracking-wider mb-6">{user.username}</div>
+				<div
+					class="text-2xl text-gray-500 font-bold tracking-wider mb-6 border-b-gray-300 border-b-2 pb-1"
+				>
+					{user.username}
+				</div>
 				<div class="flex justify-between border-b border-b-emerald-900 mb-4">
 					<div class="font-bold text-emerald-600">
 						Admin: {user.role === 'admin' ? '✔️' : '❌'}
