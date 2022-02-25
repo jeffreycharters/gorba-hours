@@ -22,7 +22,9 @@
 	let filterText = '';
 	let showSearch = false;
 
-	$: visibleUsers = users.filter((u) => u.username.includes(filterText));
+	$: visibleUsers = users.filter((u) =>
+		u.username.toLowerCase().includes(filterText.toLowerCase())
+	);
 </script>
 
 <div class="flex flex-row flex-wrap justify-between items-baseline w-auto">
