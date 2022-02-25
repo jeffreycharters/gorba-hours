@@ -2,8 +2,8 @@
 	export let entry;
 </script>
 
-<div class="flex flex-row flex-nowrap w-full justify-between items-baseline mt-2">
-	<div class="bg-emerald-200 h-1" style="flex-grow: 1;" />
+<div class="flex flex-row flex-nowrap w-full justify-between items-center mt-2">
+	<div class="bg-emerald-600 relative" style="flex-grow: 1; height: 1px;" />
 	<div class="text-center px-4 text-emerald-700 font-bold">
 		{#if entry.location.name === 'Other'}
 			{entry.other_location}
@@ -13,5 +13,5 @@
 			Unknown Location
 		{/if}
 	</div>
-	<div class="grow bg-emerald-200 h-1" style="flex-grow: 5;" />
+	<div class="grow bg-emerald-600" style="flex-grow: 10; height: 1px;" />
 </div>

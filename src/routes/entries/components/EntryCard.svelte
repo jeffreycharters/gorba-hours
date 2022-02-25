@@ -8,7 +8,7 @@
 	export let entry;
 </script>
 
-<div class="flex flex-col py-4 px-3 shadow rounded-md bg-white">
+<div class="flex flex-col pt-1 pb-4 px-3 rounded-md shadow-inner-sm border bg-gray-100">
 	<EntryCardTitle {entry} />
 
 	<EntryCardHours {entry} />
@@ -17,7 +17,9 @@
 
 	<EntryCardTrails {entry} />
 
-	<div class="p-3 text-gray-700 text-sm font-semibold bg-gray-100 my-4 rounded-md">
+	<div
+		class="p-3 text-gray-700 text-sm font-semibold bg-gray-50 my-4 rounded-md border border-gray-300"
+	>
 		{entry.description || 'No description'}<br />
 	</div>
 

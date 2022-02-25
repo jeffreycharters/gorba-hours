@@ -12,7 +12,7 @@
 
 <div class="flex flex-row flex-wrap justify-end">
 	{#each entry.keywords as k (k.uid)}
-		<div class="flex flex-row flex-nowrap text-sm justify-start items-center">
+		<div class="flex flex-row flex-nowrap text-sm justify-start items-center p-1">
 			<img src="/images/icon-tag.svg" class="h-3" alt="keyword tag" />
 			<a href="/keywords/{k.keyword}" class="pr-2 underline">{titleCase(k.keyword)}</a>
 		</div>
