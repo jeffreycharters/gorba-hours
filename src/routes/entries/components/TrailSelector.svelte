@@ -1,6 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 	import { flip } from 'svelte/animate';
+	import { elasticOut } from 'svelte/easing';
 	import { crossfade, slide } from 'svelte/transition';
 
 	export let allTrails = [];
@@ -61,7 +62,7 @@
 		<h3 class="text-lg font-bold ml-1">Trails Involved</h3>
 		{#if selectedTrails.length === 0}
 			<div
-				class="p-2 border rounded-md whitespace-nowrap bg-slate-100 border-slate-300 shadow-sm inline-block keyword text-slate-700 w-full"
+				class="py-2 px-4 border rounded-md whitespace-nowrap bg-slate-100 border-slate-300 shadow-sm inline-block keyword text-slate-700 w-full"
 				id="none-selected"
 			>
 				None selected
@@ -69,13 +70,13 @@
 		{:else}
 			{#each selectedTrails as trail (trail.uid)}
 				<div
-					animate:flip
+					animate:flip={{ duration: 400 }}
 					in:receive={{ key: trail.uid }}
 					out:send={{ key: trail.uid }}
 					onintrostart={removeNoneSelected}
 					name={trail.slug}
 					id={trail.slug}
-					class="my-1 p-2 border rounded-md whitespace-nowrap w-full border-emerald-900 bg-emerald-500 text-white font-semibold shadow-sm"
+					class="my-1 py-2 px-4 border rounded-md whitespace-nowrap w-full border-emerald-900 bg-emerald-500 text-white font-semibold shadow-sm"
 					on:click={removeTrail}
 				>
 					{trail.name}
@@ -89,13 +90,13 @@
 		{#if allTrails}
 			{#each remainingTrails as trail (trail.uid)}
 				<div
-					animate:flip={{ duration: 800 }}
+					animate:flip={{ duration: 800, easing: elasticOut }}
 					in:receive={{ key: trail.uid }}
 					out:send={{ key: trail.uid }}
 					onoutroend={checkNoneSelected}
 					name={trail.slug}
 					id={trail.slug}
-					class="my-1 p-2 border rounded-md whitespace-nowrap bg-slate-100 border-slate-300 shadow-sm inline-block keyword text-slate-700 w-full"
+					class="my-1 py-2 px-4 border rounded-md whitespace-nowrap bg-slate-100 border-slate-300 shadow-sm inline-block keyword text-slate-700 w-full"
 					on:click={addTrail}
 				>
 					{trail.name}

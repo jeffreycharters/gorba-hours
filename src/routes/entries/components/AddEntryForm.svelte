@@ -150,7 +150,7 @@
 					type="text"
 					name="title"
 					id="title"
-					class="border py-1 px-2 rounded-md w-full bg-gray-50"
+					class="border py-1 px-2 rounded-md w-full"
 					placeholder="Short Description"
 					bind:value={form.title}
 				/>
@@ -158,12 +158,7 @@
 
 			<div class="flex justify-start gap-4 items-center {sectionClass}">
 				<label for="date" class={titleClass}>Date</label>
-				<input
-					type="date"
-					bind:value={form.date}
-					class="border py-1 px-2 rounded-md bg-gray-50"
-					id="date"
-				/>
+				<input type="date" bind:value={form.date} class="border py-1 px-2 rounded-md" id="date" />
 			</div>
 			<div class={sectionClass}>
 				<div class={titleClass}>Location</div>
@@ -260,7 +255,7 @@
 					<label for="description" class="text-lg font-bold ml-1">Description</label> (optional)
 				</div>
 				<textarea
-					class="border border-slate-400 w-full h-28 rounded-md mx-auto bg-slate-50 shadow-sm"
+					class="border border-slate-400 w-full h-28 rounded-md mx-auto shadow-sm"
 					placeholder="For future reference."
 					bind:value={form.description}
 				/>
