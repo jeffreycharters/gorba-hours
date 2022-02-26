@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 	import { flip } from 'svelte/animate';
-	import { crossfade } from 'svelte/transition';
+	import { crossfade, slide } from 'svelte/transition';
 
 	export let allTrails = [];
 
@@ -55,7 +55,7 @@
 	};
 </script>
 
-<div class="mt-6 px-2 border-2 w-full rounded-md">
+<div class="mt-6 px-2 border-2 w-full rounded-md" transition:slide|local={{ duration: 200 }}>
 	<h3 class="text-lg font-bold ml-1">Trails Involved</h3>
 	{#if selectedTrails.length === 0}
 		<div

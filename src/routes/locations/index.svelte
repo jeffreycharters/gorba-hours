@@ -33,23 +33,29 @@
 	};
 </script>
 
-<div class="sm:max-w-lg sm:mx-auto">
-	<h1 class="text-2xl font-bold mb-4">Locations</h1>
+<div class="mx-1 sm:max-w-lg sm:mx-auto">
+	<div class="border border-gray-100 shadow-inner-sm p-4 my-2 rounded-md bg-gray-50 ">
+		<h1 class="text-2xl font-bold mb-4 text-emerald-800">Locations</h1>
 
-	<p class="my-2"><strong>Note:</strong> These probably never really need to be modified.</p>
+		<p class="my-2 text-gray-700">
+			<strong>Note:</strong> These never really need to be modified.
+		</p>
+	</div>
 
 	<ul class="my-4">
 		{#each locations as location (location.uid)}
-			<li class="my-2 flex justify-between p-4 shadow-inner-sm rounded-md bg-slate-50">
-				<span class="text-lg font-bold text-slate-700">{location.name}</span>
+			<li
+				class="my-2 flex justify-between items-center py-2 px-4 shadow-inner-sm rounded-md bg-slate-50"
+			>
+				<span class="text-lg font-bold text-emerald-700">{location.name}</span>
 				<div>
 					<a
 						href="locations/{location.slug}"
-						class="underline text-gray-500 font-bold flex items-baseline"
-					>
+						class="text-gray-500 font-semibold flex items-center border border-gray-500 px-2 py-1 rounded-md bg-slate-100 text-sm"
+						>Edit trails
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							class="h-5 w-5 translate-y-1"
+							class="h-4 w-4 ml-1"
 							viewBox="0 0 20 20"
 							fill="currentColor"
 						>
@@ -62,8 +68,7 @@
 								clip-rule="evenodd"
 							/>
 						</svg>
-						Edit trails</a
-					>
+					</a>
 				</div>
 			</li>
 		{/each}

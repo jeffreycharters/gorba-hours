@@ -50,7 +50,7 @@ export const post = async ({ request }) => {
 			date: dateObject,
 			title: form.title,
 			location: {
-				connect: { uid: form.location }
+				connect: { slug: form.location }
 			},
 			other_location: form.otherLocation || null,
 			volunteers: form.volunteers,

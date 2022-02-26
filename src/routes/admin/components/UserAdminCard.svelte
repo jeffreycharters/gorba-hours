@@ -42,7 +42,9 @@
 
 <div class="mb-4">
 	<form on:submit|preventDefault={updateUser}>
-		<div class="background-gray-50 rounded-md w-auto py-2 px-4 shadow-inner-sm m-1 border">
+		<div
+			class="background-gray-50 rounded-md w-auto py-2 px-4 shadow-inner-sm m-1 border bg-gray-100"
+		>
 			<div class="flex flex-col justify-between inner-md">
 				<div
 					class="text-2xl text-gray-500 font-bold tracking-wider mb-6 border-b-gray-300 border-b-2 pb-1"
@@ -64,7 +66,7 @@
 				<div class="font-semibold text-emerald-600">
 					New password <input
 						type="password"
-						class="border rounded-md shadow-inner-sm w-full border-gray-300"
+						class="border rounded-md shadow-inner-sm w-full border-gray-300 bg-gray-50"
 						name="password"
 						bind:value={password}
 					/><br />

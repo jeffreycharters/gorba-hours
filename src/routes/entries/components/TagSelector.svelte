@@ -11,17 +11,17 @@
 	};
 </script>
 
-<div class="mt-6 px-2 border-2 w-full rounded-md">
+<div class="my-3 p-2 shadow-inner-sm rounded-md border-slate-200">
 	<h3 class="text-lg font-bold ml-1">Add tags</h3>
 
-	<p class="text-sm">
+	<p class="text-sm mt-2 mb-4 px-2">
 		These will help us group data, please take a second and tap/click the relevant keywords.
 	</p>
 
 	{#await allKeywords}
 		<div>Awaiting Keywords...</div>
 	{:then keywords}
-		<div class="flex floex-row flex-wrap">
+		<div class="flex flex-row flex-wrap gap-2 justify-center">
 			{#each keywords as keyword (keyword.uid)}
 				<div>
 					<input
@@ -34,7 +34,7 @@
 					/>
 					<label
 						for="keyword-{keyword.uid}"
-						class="border-2 border-slate-200 bg-slate-50 text-slate-600 m-1 py-1 px-2 rounded-md keyword inline-block"
+						class="text-sm py-1 px-4 border rounded-md whitespace-nowrap location bg-slate-100 border-slate-300 shadow-sm inline-block keyword text-slate-700"
 						>{keyword.keyword}</label
 					>
 				</div>

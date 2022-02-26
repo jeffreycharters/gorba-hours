@@ -73,7 +73,7 @@
 	};
 </script>
 
-<div class="sm:max-w-lg sm:mx-auto">
+<div class="mx-1 sm:max-w-lg sm:mx-auto">
 	<div
 		class="shadow-inner-sm py-2 rounded-md border border-slate-100 bg-slate-50 my-2 text-emerald-800"
 	>

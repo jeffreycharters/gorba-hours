@@ -107,7 +107,7 @@
 				let item = results[i];
 				const match = item.match(new RegExp(inputVal, 'i'));
 				item = item.replace(match[0], `<strong>${match[0]}</strong>`);
-				suggestions.innerHTML += `<li class="text-emerald-600 py-1 my-1 px-4 hover:bg-slate-200 rounded-md border-2">${item}</li>`;
+				suggestions.innerHTML += `<li class="text-emerald-600 py-1 my-1 px-4 hover:bg-slate-200 rounded-md border">${item}</li>`;
 			}
 			suggestions.classList.add('has-suggestions');
 		} else {
@@ -125,35 +125,49 @@
 		suggestions.innerHTML = '';
 		suggestions.classList.remove('has-suggestions');
 	};
+
+	const titleClass = 'text-lg font-bold ml-2 text-slate-700 tracking-wide';
 </script>
 
-<div class="sm: max-w-lg mx-auto">
-	<h1 class="text-2xl font-bold mx-2">Log Volunteer Hours</h1>
+<div class="m-1 sm:max-w-lg sm:mx-auto">
+	<h1
+		class="text-2xl font-bold p-2 shadow-inner-sm bg-gray-50 rounded-md text-center text-emerald-700"
+	>
+		Log Volunteer Hours
+	</h1>
 
 	<form
-		class="w-11/12 my-2 mx-auto"
+		class="w-full my-2 mx-auto shadow-inner-sm p-2 rounded-md bg-gray-50 border border-gray-100"
 		method="post"
 		on:submit|preventDefault={submitEntry}
 		autocomplete="off"
 	>
-		<div class="flex flex-col gap-3 mt-4">
-			<div class="flex flex-col">
-				<label for="title" class="text-lg font-bold ml-1">Title</label>
+		<div class="flex flex-col gap-3">
+			<div class="flex flex-col my-2 p-2 shadow-inner-sm rounded-md border-slate-200">
+				<label for="title" class={titleClass}>Title</label>
 				<input
 					type="text"
 					name="title"
 					id="title"
-					class="border-2 py-1 px-2 rounded-md w-full"
+					class="border py-1 px-2 rounded-md w-full bg-gray-50"
 					placeholder="Short Description"
 					bind:value={form.title}
 				/>
 			</div>
-			<div class="flex flex-col">
-				<label for="date" class="text-lg font-bold ml-1">Date</label>
-				<input type="date" bind:value={form.date} class="border-2 py-1 px-2 rounded-md" id="date" />
+
+			<div
+				class="flex my-2 p-2 shadow-inner-sm rounded-md border-slate-200 justify-start gap-4 items-baseline"
+			>
+				<label for="date" class={titleClass}>Date</label>
+				<input
+					type="date"
+					bind:value={form.date}
+					class="border py-1 px-2 rounded-md bg-gray-50"
+					id="date"
+				/>
 			</div>
-			<div class="mt-6">
-				<div class="text-lg font-bold ml-1">Location</div>
+			<div class="my-3 p-2 shadow-inner-sm rounded-md border-slate-200">
+				<div class={titleClass}>Location</div>
 				{#await locations}
 					<div>Awaiting locations..</div>
 				{:then locs}
@@ -164,13 +178,13 @@
 									type="radio"
 									name="location"
 									id={loc.name}
-									value={loc.uid}
+									value={loc.slug}
 									class="opacity-0 w-1 h-1"
 									bind:group={form.location}
 									on:change={() => fetchTrails(loc.slug)}
 								/>
 								<label
-									class="py-2 px-4 border-2 rounded-md whitespace-nowrap location"
+									class="py-1 px-4 border rounded-md whitespace-nowrap location bg-slate-100 border-slate-300 shadow-sm text-slate-700 font-semibold"
 									for={loc.name}>{loc.name}</label
 								>
 							</div>
@@ -178,12 +192,12 @@
 					</div>
 
 					{#if showLocationOtherField}
-						<div transition:slide={{ duration: 200 }} class="mt-2 w-full">
+						<div transition:slide|local={{ duration: 200 }} class="mt-2 w-full">
 							Specify location <span class="text-gray-400">(optional)</span>:
 							<div class="autocomplete">
 								<input
 									type="text"
-									class="w-full border-2 border-gray-300 rounded-md reveal-if-active"
+									class="w-full border border-gray-300 rounded-md reveal-if-active bg-gray-50"
 									id="location-other"
 									name="location-other"
 									placeholder="Start typing to see others"
@@ -199,55 +213,55 @@
 						<div />
 					{/if}
 				{/await}
+			</div>
 
-				<div class="mt-6 flex flex-col">
-					<label for="volunteers" class="text-lg font-bold ml-1">Volunteer Count</label>
-					<div class="ml-2 text-sm">Total number of volunteers involved.</div>
+			<div class="my-2 flex flex-col shadow-inner-sm p-2 rounded-md">
+				<label for="volunteers" class="text-lg font-bold ml-1">Volunteer Count</label>
+				<div class="ml-2 text-sm">Total number of volunteers involved.</div>
 
-					<Counter
-						count={form.volunteers}
-						min="1"
-						steps={[1]}
-						on:updateCount={(e) => {
-							form.volunteers = e.detail;
-						}}
-					/>
-				</div>
+				<Counter
+					count={form.volunteers}
+					min="1"
+					steps={[1]}
+					on:updateCount={(e) => {
+						form.volunteers = e.detail;
+					}}
+				/>
+			</div>
 
-				<div class="flex flex-col mt-6">
-					<label for="hours" class="text-lg font-bold ml-1">Volunteer Hours</label>
-					<div class="text-sm ml-2">Total volunteer-hours worked.</div>
-					<Counter
-						count={form.hours}
-						min="0.25"
-						steps={[0.5, 2]}
-						on:updateCount={(e) => {
-							form.hours = e.detail;
-						}}
-					/>
-				</div>
+			<div class="flex flex-col my-3 p-2 shadow-inner-sm rounded-md border-slate-200">
+				<label for="hours" class="text-lg font-bold ml-1">Volunteer Hours</label>
+				<div class="text-sm ml-2">Total volunteer-hours worked.</div>
+				<Counter
+					count={form.hours}
+					min="0.25"
+					steps={[0.5, 2]}
+					on:updateCount={(e) => {
+						form.hours = e.detail;
+					}}
+				/>
+			</div>
 
-				{#if form.location != 'other' && form.location != ''}
-					<TrailSelector {allTrails} on:updateTrails={(e) => (form.trails = e.detail)} />
-				{/if}
+			{#if form.location != '' && form.location != 'other'}
+				<TrailSelector {allTrails} on:updateTrails={(e) => (form.trails = e.detail)} />
+			{/if}
 
-				<TagSelector {allKeywords} on:updateTags={(e) => (form.tags = e.detail)} />
+			<TagSelector {allKeywords} on:updateTags={(e) => (form.tags = e.detail)} />
 
-				<div class="mt-6">
-					<label for="description" class="text-lg font-bold ml-1">Description</label> (optional)
-					<textarea
-						class="border-2 border-gray-300 w-full h-24 rounded-md mx-auto"
-						placeholder="For future reference."
-						bind:value={form.description}
-					/>
-				</div>
+			<div class="my-3 p-2 shadow-inner-sm rounded-md border-slate-200">
+				<label for="description" class="text-lg font-bold ml-1">Description</label> (optional)
+				<textarea
+					class="border border-slate-300 w-full h-28 rounded-md mx-auto bg-slate-50"
+					placeholder="For future reference."
+					bind:value={form.description}
+				/>
 			</div>
 		</div>
 
 		<input
 			type="submit"
 			value="Save Entry"
-			class="border-2 border-emerald-600 bg-emerald-100 py-1 px-2 rounded-md text-emerald-700 mt-6 w-full mx-auto font-bold"
+			class="border border-emerald-600 bg-emerald-100 py-1 px-2 rounded-md text-emerald-700 mt-4 w-full mx-auto font-semibold shadow-md"
 		/>
 	</form>
 </div>
