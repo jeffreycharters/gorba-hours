@@ -8,7 +8,7 @@
 	export let entry;
 </script>
 
-<div class="flex flex-col pt-1 pb-4 px-3 rounded-md shadow-inner-sm border bg-gray-100">
+<div class="flex flex-col py-4 px-3 rounded-md shadow-inner-sm border bg-gray-100">
 	<EntryCardTitle {entry} />
 
 	<EntryCardHours {entry} />
