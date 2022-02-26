@@ -18,3 +18,17 @@ export const getOtherLocations = async () => {
 	});
 	return Promise.resolve(locations);
 };
+
+export const toggleImportance = async (uid, activeState) => {
+	console.log(uid);
+	const trail = await prisma.trail.update({
+		where: {
+			uid: uid
+		},
+		data: {
+			active: activeState
+		}
+	});
+
+	return Promise.resolve(trail);
+};

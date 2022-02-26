@@ -21,6 +21,9 @@ export const get = async ({ params }) => {
 			location: {
 				uid: location.uid
 			}
+		},
+		orderBy: {
+			slug: 'asc'
 		}
 	});
 

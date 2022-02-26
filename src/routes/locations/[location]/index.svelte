@@ -10,6 +10,8 @@
 </script>
 
 <script>
+	import Trail from '../components/Trail.svelte';
+
 	export let location;
 	export let trails;
 
@@ -32,20 +34,6 @@
 		name = '';
 	};
 
-	const removeTrail = async (uid) => {
-		const res = await fetch(`/api/locations/trails`, {
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ uid })
-		});
-
-		if (res.ok) {
-			trails = trails.filter((t) => t.uid != uid);
-		}
-	};
-
 	const removeLocation = async () => {
 		const res = await fetch(`/api/locations`, {
 			method: 'DELETE',
@@ -63,6 +51,26 @@
 	const nameHandler = (e) => {
 		disabled = e.target.value === location.name ? false : true;
 	};
+
+	const handleActiveToggle = async (e) => {
+		const uid = e.detail.uid;
+		const action = e.detail.active ? 'inactivate' : 'activate';
+		const res = await fetch('/api/locations/trails', {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ uid, action })
+		});
+
+		if (res.ok) {
+			let updatedTrail = trails.find((t) => t.uid == uid);
+			updatedTrail = { ...updatedTrail, active: !e.detail.active };
+			trails = [...trails.filter((t) => t.uid != uid), updatedTrail].sort((a, b) =>
+				a.slug > b.slug ? 1 : -1
+			);
+		}
+	};
 </script>
 
 <div class="sm:max-w-lg sm:mx-auto">
@@ -72,22 +80,8 @@
 		<h1 class="text-2xl font-bold text-center">Trails at {location.name}</h1>
 	</div>
 	<ul class="shadow-inner-sm py-2 rounded-md border border-slate-100 bg-slate-50">
-		{#each trails as trail, i (trail.uid)}
-			<li class="p-2 m-2 flex justify-between {i % 2 === 0 ? 'bg-slate-100' : ''} rounded-md">
-				<div class="flex items-center">
-					<div class="font-bold text-emerald-800 text-lg">{trail.name}</div>
-					<button
-						class="ml-2 border border-slate-400 px-1 text-sm text-slate-600 bg-white rounded-md"
-						>active</button
-					>
-				</div>
-				<button
-					on:click={() => removeTrail(trail.uid)}
-					class="bg-amber-100 py-1 px-2 rounded-md text-amber-800 text-sm border-amber-700 border"
-				>
-					Inactivate
-				</button>
-			</li>
+		{#each trails as trail (trail.uid)}
+			<Trail {trail} on:toggleActive={handleActiveToggle} />
 		{/each}
 	</ul>
 

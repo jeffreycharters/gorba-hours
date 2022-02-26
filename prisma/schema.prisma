@@ -24,6 +24,7 @@ model User {
   hours      Entry[]
   role       String   @default("normie")
   created_at DateTime @default(now())
+  active     Boolean  @default(true)
 }
 
 model Profile {
@@ -57,6 +58,7 @@ model Location {
   slug   String  @unique
   trails Trail[]
   hours  Entry[]
+  active Boolean @default(true)
 }
 
 model Trail {
@@ -66,6 +68,7 @@ model Trail {
   entries     Entry[]
   location    Location @relation(fields: [locationUid], references: [uid])
   locationUid String
+  active      Boolean  @default(true)
 }
 
 model Keyword {
