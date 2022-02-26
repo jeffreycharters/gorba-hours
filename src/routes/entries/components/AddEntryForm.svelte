@@ -127,23 +127,24 @@
 	};
 
 	const titleClass = 'text-lg font-bold ml-2 text-slate-700 tracking-wide';
+	const sectionClass = 'my-2 p-2 shadow-inner-sm rounded-md border-slate-200 border bg-slate-50';
 </script>
 
 <div class="m-1 sm:max-w-lg sm:mx-auto">
 	<h1
-		class="text-2xl font-bold p-2 shadow-inner-sm bg-gray-50 rounded-md text-center text-emerald-700 border-slate-200 border"
+		class="text-2xl font-bold p-2 shadow-inner-sm bg-slate-50 rounded-md text-center text-emerald-700 border-slate-200 border"
 	>
 		Log Volunteer Hours
 	</h1>
 
 	<form
-		class="w-full my-2 mx-auto shadow-inner-sm p-2 rounded-md bg-gray-50 border border-gray-100"
+		class="w-full my-2 mx-auto"
 		method="post"
 		on:submit|preventDefault={submitEntry}
 		autocomplete="off"
 	>
 		<div class="flex flex-col gap-3">
-			<div class="flex flex-col my-2 p-2 shadow-inner-sm rounded-md border-slate-200 border">
+			<div class="flex flex-col {sectionClass}">
 				<label for="title" class={titleClass}>Title</label>
 				<input
 					type="text"
@@ -155,9 +156,7 @@
 				/>
 			</div>
 
-			<div
-				class="flex my-2 p-2 shadow-inner-sm rounded-md border-slate-200 justify-start gap-4 items-baseline border"
-			>
+			<div class="flex justify-start gap-4 items-center {sectionClass}">
 				<label for="date" class={titleClass}>Date</label>
 				<input
 					type="date"
@@ -166,7 +165,7 @@
 					id="date"
 				/>
 			</div>
-			<div class="my-3 p-2 shadow-inner-sm rounded-md border-slate-200 border">
+			<div class={sectionClass}>
 				<div class={titleClass}>Location</div>
 				{#await locations}
 					<div>Awaiting locations..</div>
@@ -215,7 +214,7 @@
 				{/await}
 			</div>
 
-			<div class="my-2 flex flex-col shadow-inner-sm p-2 rounded-md border-slate-200 border">
+			<div class="flex flex-col {sectionClass}">
 				<label for="volunteers" class="text-lg font-bold ml-1">Volunteer Count</label>
 				<div class="ml-2 text-sm">Total number of volunteers involved.</div>
 
@@ -229,7 +228,7 @@
 				/>
 			</div>
 
-			<div class="flex flex-col my-3 p-2 shadow-inner-sm rounded-md border-slate-200 border">
+			<div class="flex flex-col {sectionClass}">
 				<label for="hours" class="text-lg font-bold ml-1">Volunteer Hours</label>
 				<div class="text-sm ml-2">Total volunteer-hours worked.</div>
 				<Counter
@@ -243,12 +242,20 @@
 			</div>
 
 			{#if form.location != '' && form.location != 'other'}
-				<TrailSelector {allTrails} on:updateTrails={(e) => (form.trails = e.detail)} />
+				<TrailSelector
+					{allTrails}
+					on:updateTrails={(e) => (form.trails = e.detail)}
+					classes={sectionClass}
+				/>
 			{/if}
 
-			<TagSelector {allKeywords} on:updateTags={(e) => (form.tags = e.detail)} />
+			<TagSelector
+				{allKeywords}
+				on:updateTags={(e) => (form.tags = e.detail)}
+				classes={sectionClass}
+			/>
 
-			<div class="my-3 p-2 shadow-inner-sm rounded-md border-slate-200 border">
+			<div class={sectionClass}>
 				<div class="mb-2">
 					<label for="description" class="text-lg font-bold ml-1">Description</label> (optional)
 				</div>

@@ -4,6 +4,7 @@
 	import { crossfade, slide } from 'svelte/transition';
 
 	export let allTrails = [];
+	export let classes;
 
 	const dispatch = createEventDispatcher();
 	let selectedTrails = [];
@@ -55,10 +56,7 @@
 	};
 </script>
 
-<div
-	class="my-3 p-2 shadow-inner-sm rounded-md border-slate-200 border"
-	transition:slide|local={{ duration: 200 }}
->
+<div class={classes} transition:slide|local={{ duration: 200 }}>
 	<div class="mb-4">
 		<h3 class="text-lg font-bold ml-1">Trails Involved</h3>
 		{#if selectedTrails.length === 0}
