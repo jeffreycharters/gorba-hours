@@ -11,7 +11,7 @@
 	};
 </script>
 
-<div class="my-3 p-2 shadow-inner-sm rounded-md border-slate-200">
+<div class="my-3 p-2 shadow-inner-sm rounded-md border-slate-200 border">
 	<h3 class="text-lg font-bold ml-1">Add tags</h3>
 
 	<p class="text-sm mt-2 mb-4 px-2">

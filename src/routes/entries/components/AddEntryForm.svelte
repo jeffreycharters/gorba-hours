@@ -131,7 +131,7 @@
 
 <div class="m-1 sm:max-w-lg sm:mx-auto">
 	<h1
-		class="text-2xl font-bold p-2 shadow-inner-sm bg-gray-50 rounded-md text-center text-emerald-700"
+		class="text-2xl font-bold p-2 shadow-inner-sm bg-gray-50 rounded-md text-center text-emerald-700 border-slate-200 border"
 	>
 		Log Volunteer Hours
 	</h1>
@@ -143,7 +143,7 @@
 		autocomplete="off"
 	>
 		<div class="flex flex-col gap-3">
-			<div class="flex flex-col my-2 p-2 shadow-inner-sm rounded-md border-slate-200">
+			<div class="flex flex-col my-2 p-2 shadow-inner-sm rounded-md border-slate-200 border">
 				<label for="title" class={titleClass}>Title</label>
 				<input
 					type="text"
@@ -156,7 +156,7 @@
 			</div>
 
 			<div
-				class="flex my-2 p-2 shadow-inner-sm rounded-md border-slate-200 justify-start gap-4 items-baseline"
+				class="flex my-2 p-2 shadow-inner-sm rounded-md border-slate-200 justify-start gap-4 items-baseline border"
 			>
 				<label for="date" class={titleClass}>Date</label>
 				<input
@@ -166,7 +166,7 @@
 					id="date"
 				/>
 			</div>
-			<div class="my-3 p-2 shadow-inner-sm rounded-md border-slate-200">
+			<div class="my-3 p-2 shadow-inner-sm rounded-md border-slate-200 border">
 				<div class={titleClass}>Location</div>
 				{#await locations}
 					<div>Awaiting locations..</div>
@@ -215,7 +215,7 @@
 				{/await}
 			</div>
 
-			<div class="my-2 flex flex-col shadow-inner-sm p-2 rounded-md">
+			<div class="my-2 flex flex-col shadow-inner-sm p-2 rounded-md border-slate-200 border">
 				<label for="volunteers" class="text-lg font-bold ml-1">Volunteer Count</label>
 				<div class="ml-2 text-sm">Total number of volunteers involved.</div>
 
@@ -229,7 +229,7 @@
 				/>
 			</div>
 
-			<div class="flex flex-col my-3 p-2 shadow-inner-sm rounded-md border-slate-200">
+			<div class="flex flex-col my-3 p-2 shadow-inner-sm rounded-md border-slate-200 border">
 				<label for="hours" class="text-lg font-bold ml-1">Volunteer Hours</label>
 				<div class="text-sm ml-2">Total volunteer-hours worked.</div>
 				<Counter
@@ -248,10 +248,12 @@
 
 			<TagSelector {allKeywords} on:updateTags={(e) => (form.tags = e.detail)} />
 
-			<div class="my-3 p-2 shadow-inner-sm rounded-md border-slate-200">
-				<label for="description" class="text-lg font-bold ml-1">Description</label> (optional)
+			<div class="my-3 p-2 shadow-inner-sm rounded-md border-slate-200 border">
+				<div class="mb-2">
+					<label for="description" class="text-lg font-bold ml-1">Description</label> (optional)
+				</div>
 				<textarea
-					class="border border-slate-300 w-full h-28 rounded-md mx-auto bg-slate-50"
+					class="border border-slate-400 w-full h-28 rounded-md mx-auto bg-slate-50 shadow-sm"
 					placeholder="For future reference."
 					bind:value={form.description}
 				/>

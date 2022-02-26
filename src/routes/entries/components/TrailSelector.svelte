@@ -55,31 +55,36 @@
 	};
 </script>
 
-<div class="mt-6 px-2 border-2 w-full rounded-md" transition:slide|local={{ duration: 200 }}>
-	<h3 class="text-lg font-bold ml-1">Trails Involved</h3>
-	{#if selectedTrails.length === 0}
-		<div
-			class="w-full bg-slate-100 my-1 p-2 rounded-md text-slate-600 border-2 border-slate-200"
-			id="none-selected"
-		>
-			None selected
-		</div>
-	{:else}
-		{#each selectedTrails as trail (trail.uid)}
+<div
+	class="my-3 p-2 shadow-inner-sm rounded-md border-slate-200 border"
+	transition:slide|local={{ duration: 200 }}
+>
+	<div class="mb-4">
+		<h3 class="text-lg font-bold ml-1">Trails Involved</h3>
+		{#if selectedTrails.length === 0}
 			<div
-				animate:flip
-				in:receive={{ key: trail.uid }}
-				out:send={{ key: trail.uid }}
-				onintrostart={removeNoneSelected}
-				name={trail.slug}
-				id={trail.slug}
-				class="w-full my-1 p-2 border-2 rounded-md border-emerald-900 bg-emerald-500 text-white font-bold"
-				on:click={removeTrail}
+				class="p-2 border rounded-md whitespace-nowrap bg-slate-100 border-slate-300 shadow-sm inline-block keyword text-slate-700 w-full"
+				id="none-selected"
 			>
-				{trail.name}
+				None selected
 			</div>
-		{/each}
-	{/if}
+		{:else}
+			{#each selectedTrails as trail (trail.uid)}
+				<div
+					animate:flip
+					in:receive={{ key: trail.uid }}
+					out:send={{ key: trail.uid }}
+					onintrostart={removeNoneSelected}
+					name={trail.slug}
+					id={trail.slug}
+					class="my-1 p-2 border rounded-md whitespace-nowrap w-full border-emerald-900 bg-emerald-500 text-white font-semibold shadow-sm"
+					on:click={removeTrail}
+				>
+					{trail.name}
+				</div>
+			{/each}
+		{/if}
+	</div>
 
 	<h3 class="text-lg font-bold ml-1">Available Trails</h3>
 	<div class="flex flex-col m-0">
@@ -92,7 +97,7 @@
 					onoutroend={checkNoneSelected}
 					name={trail.slug}
 					id={trail.slug}
-					class="w-full bg-slate-50 my-1 p-2 border-2 border-slate-200 rounded-md text-slate-600"
+					class="my-1 p-2 border rounded-md whitespace-nowrap bg-slate-100 border-slate-300 shadow-sm inline-block keyword text-slate-700 w-full"
 					on:click={addTrail}
 				>
 					{trail.name}
