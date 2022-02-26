@@ -31,11 +31,11 @@ export const post = async ({ request }) => {
 export const del = async ({ request }) => {
 	const body = await request.json();
 
-	await prisma.location.delete({
-		where: {
-			uid: body.uid
-		}
-	});
+	// await prisma.location.delete({
+	// 	where: {
+	// 		uid: body.uid
+	// 	}
+	// });
 
 	return {
 		status: 203

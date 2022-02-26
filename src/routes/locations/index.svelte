@@ -31,58 +31,65 @@
 		locations = [...locations, body.location];
 		name = '';
 	};
-
-	const removeLocation = async (uid) => {
-		const res = await fetch(`api/locations`, {
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ uid })
-		});
-
-		if (res.ok) {
-			locations = locations.filter((l) => l.uid != uid);
-		}
-	};
 </script>
 
-<h1>Locations!</h1>
+<div class="sm:max-w-lg sm:mx-auto">
+	<h1 class="text-2xl font-bold mb-4">Locations</h1>
 
-<p>Right now there are:</p>
+	<p class="my-2"><strong>Note:</strong> These probably never really need to be modified.</p>
 
-<ul>
-	{#each locations as location (location.uid)}
-		<li class="my-2">
-			--> <a href="locations/{location.slug}" class="underline">{location.name}</a>
-			<button
-				on:click={() => removeLocation(location.uid)}
-				class="bg-red-500 py-1 px-2 rounded-lg text-red-50 text-sm"
-			>
-				Delete
-			</button>
-		</li>
-	{/each}
-</ul>
+	<ul class="my-4">
+		{#each locations as location (location.uid)}
+			<li class="my-2 flex justify-between p-4 shadow-inner-sm rounded-md bg-slate-50">
+				<span class="text-lg font-bold text-slate-700">{location.name}</span>
+				<div>
+					<a
+						href="locations/{location.slug}"
+						class="underline text-gray-500 font-bold flex items-baseline"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-5 w-5 translate-y-1"
+							viewBox="0 0 20 20"
+							fill="currentColor"
+						>
+							<path
+								d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"
+							/>
+							<path
+								fill-rule="evenodd"
+								d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+								clip-rule="evenodd"
+							/>
+						</svg>
+						Edit trails</a
+					>
+				</div>
+			</li>
+		{/each}
+	</ul>
 
-<div class="font-bold mt-2">Add one:</div>
+	<div class="shadow-inner-sm rounded-md border-slate-100 border bg-slate-50 p-4">
+		<div class="font-bold mt-2 text-lg mb-4">Add location</div>
 
-<form>
-	<div class="flex flex-col w-fit">
-		<label for="name">Location Name</label>
-		<input
-			type="text"
-			id="name"
-			name="name"
-			placeholder="Location"
-			class="border-2 py-2 px-4 w-64"
-			bind:value={name}
-		/>
-		<input
-			type="submit"
-			on:click|preventDefault={addLocation}
-			value="Add Location"
-			class="border-2 py-2 px-4 w-64 mt-2 bg-emerald-100 border-emerald-700"
-		/>
+		<form>
+			<div class="flex flex-col w-full">
+				<label for="name" class="pl-2 font-semibold">Location Name</label>
+				<input
+					type="text"
+					id="name"
+					name="name"
+					placeholder="Location"
+					class="border rounded-md py-2 px-4 w-full"
+					bind:value={name}
+				/>
+				<input
+					type="submit"
+					on:click|preventDefault={addLocation}
+					value="Add Location"
+					class="border py-2 px-4 w-full rounded-md mt-2 bg-emerald-100 border-emerald-700 text-emerald-800 font-semibold"
+				/>
+			</div>
+		</form>
 	</div>
-</form>
+</div>

@@ -16,7 +16,7 @@
 	export let entries;
 </script>
 
-<div class="p-1 flex flex-col gap-4 min-h-full">
+<div class="p-1 flex flex-col gap-4 min-h-full sm:max-w-lg sm:mx-auto">
 	<div
 		class="rounded-md py-4 px-4 text-3xl font-bold text-emerald-600 bg-emerald-50 shadow-inner-sm text-center border-b-emerald-200 border-b"
 	>

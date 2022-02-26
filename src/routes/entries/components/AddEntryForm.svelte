@@ -127,127 +127,130 @@
 	};
 </script>
 
-<h1 class="text-2xl font-bold mx-2">Log Volunteer Hours</h1>
+<div class="sm: max-w-lg mx-auto">
+	<h1 class="text-2xl font-bold mx-2">Log Volunteer Hours</h1>
 
-<form
-	class="w-11/12 my-2 mx-auto"
-	method="post"
-	on:submit|preventDefault={submitEntry}
-	autocomplete="off"
->
-	<div class="flex flex-col gap-3 mt-4">
-		<div class="flex flex-col">
-			<label for="title" class="text-lg font-bold ml-1">Title</label>
-			<input
-				type="text"
-				name="title"
-				id="title"
-				class="border-2 py-1 px-2 rounded-md w-full"
-				placeholder="Short Description"
-				bind:value={form.title}
-			/>
-		</div>
-		<div class="flex flex-col">
-			<label for="date" class="text-lg font-bold ml-1">Date</label>
-			<input type="date" bind:value={form.date} class="border-2 py-1 px-2 rounded-md" id="date" />
-		</div>
-		<div class="mt-6">
-			<div class="text-lg font-bold ml-1">Location</div>
-			{#await locations}
-				<div>Awaiting locations..</div>
-			{:then locs}
-				<div class="flex fex-row justify-evenly items-baseline gap-1">
-					{#each locs as loc (loc.uid)}
-						<div class="my-2 inline-block">
-							<input
-								type="radio"
-								name="location"
-								id={loc.name}
-								value={loc.uid}
-								class="opacity-0 w-1 h-1"
-								bind:group={form.location}
-								on:change={() => fetchTrails(loc.slug)}
-							/>
-							<label class="py-2 px-4 border-2 rounded-md whitespace-nowrap location" for={loc.name}
-								>{loc.name}</label
-							>
-						</div>
-					{/each}
-				</div>
+	<form
+		class="w-11/12 my-2 mx-auto"
+		method="post"
+		on:submit|preventDefault={submitEntry}
+		autocomplete="off"
+	>
+		<div class="flex flex-col gap-3 mt-4">
+			<div class="flex flex-col">
+				<label for="title" class="text-lg font-bold ml-1">Title</label>
+				<input
+					type="text"
+					name="title"
+					id="title"
+					class="border-2 py-1 px-2 rounded-md w-full"
+					placeholder="Short Description"
+					bind:value={form.title}
+				/>
+			</div>
+			<div class="flex flex-col">
+				<label for="date" class="text-lg font-bold ml-1">Date</label>
+				<input type="date" bind:value={form.date} class="border-2 py-1 px-2 rounded-md" id="date" />
+			</div>
+			<div class="mt-6">
+				<div class="text-lg font-bold ml-1">Location</div>
+				{#await locations}
+					<div>Awaiting locations..</div>
+				{:then locs}
+					<div class="flex fex-row justify-evenly items-baseline gap-1">
+						{#each locs as loc (loc.uid)}
+							<div class="my-2 inline-block">
+								<input
+									type="radio"
+									name="location"
+									id={loc.name}
+									value={loc.uid}
+									class="opacity-0 w-1 h-1"
+									bind:group={form.location}
+									on:change={() => fetchTrails(loc.slug)}
+								/>
+								<label
+									class="py-2 px-4 border-2 rounded-md whitespace-nowrap location"
+									for={loc.name}>{loc.name}</label
+								>
+							</div>
+						{/each}
+					</div>
 
-				{#if showLocationOtherField}
-					<div transition:slide={{ duration: 200 }} class="mt-2 w-full">
-						Specify location <span class="text-gray-400">(optional)</span>:
-						<div class="autocomplete">
-							<input
-								type="text"
-								class="w-full border-2 border-gray-300 rounded-md reveal-if-active"
-								id="location-other"
-								name="location-other"
-								placeholder="Start typing to see others"
-								bind:value={form.otherLocation}
-								on:keyup={searchHandler}
-							/>
-							<div class="suggestions relative w-full">
-								<ul on:click={useSuggestion} class="u-list absolute bg-white w-full opacity-95" />
+					{#if showLocationOtherField}
+						<div transition:slide={{ duration: 200 }} class="mt-2 w-full">
+							Specify location <span class="text-gray-400">(optional)</span>:
+							<div class="autocomplete">
+								<input
+									type="text"
+									class="w-full border-2 border-gray-300 rounded-md reveal-if-active"
+									id="location-other"
+									name="location-other"
+									placeholder="Start typing to see others"
+									bind:value={form.otherLocation}
+									on:keyup={searchHandler}
+								/>
+								<div class="suggestions relative w-full">
+									<ul on:click={useSuggestion} class="u-list absolute bg-white w-full opacity-95" />
+								</div>
 							</div>
 						</div>
-					</div>
-				{:else}
-					<div />
+					{:else}
+						<div />
+					{/if}
+				{/await}
+
+				<div class="mt-6 flex flex-col">
+					<label for="volunteers" class="text-lg font-bold ml-1">Volunteer Count</label>
+					<div class="ml-2 text-sm">Total number of volunteers involved.</div>
+
+					<Counter
+						count={form.volunteers}
+						min="1"
+						steps={[1]}
+						on:updateCount={(e) => {
+							form.volunteers = e.detail;
+						}}
+					/>
+				</div>
+
+				<div class="flex flex-col mt-6">
+					<label for="hours" class="text-lg font-bold ml-1">Volunteer Hours</label>
+					<div class="text-sm ml-2">Total volunteer-hours worked.</div>
+					<Counter
+						count={form.hours}
+						min="0.25"
+						steps={[0.5, 2]}
+						on:updateCount={(e) => {
+							form.hours = e.detail;
+						}}
+					/>
+				</div>
+
+				{#if form.location != 'other' && form.location != ''}
+					<TrailSelector {allTrails} on:updateTrails={(e) => (form.trails = e.detail)} />
 				{/if}
-			{/await}
 
-			<div class="mt-6 flex flex-col">
-				<label for="volunteers" class="text-lg font-bold ml-1">Volunteer Count</label>
-				<div class="ml-2 text-sm">Total number of volunteers involved.</div>
+				<TagSelector {allKeywords} on:updateTags={(e) => (form.tags = e.detail)} />
 
-				<Counter
-					count={form.volunteers}
-					min="1"
-					steps={[1]}
-					on:updateCount={(e) => {
-						form.volunteers = e.detail;
-					}}
-				/>
-			</div>
-
-			<div class="flex flex-col mt-6">
-				<label for="hours" class="text-lg font-bold ml-1">Volunteer Hours</label>
-				<div class="text-sm ml-2">Total volunteer-hours worked.</div>
-				<Counter
-					count={form.hours}
-					min="0.25"
-					steps={[0.5, 2]}
-					on:updateCount={(e) => {
-						form.hours = e.detail;
-					}}
-				/>
-			</div>
-
-			{#if form.location != 'other' && form.location != ''}
-				<TrailSelector {allTrails} on:updateTrails={(e) => (form.trails = e.detail)} />
-			{/if}
-
-			<TagSelector {allKeywords} on:updateTags={(e) => (form.tags = e.detail)} />
-
-			<div class="mt-6">
-				<label for="description" class="text-lg font-bold ml-1">Description</label> (optional)
-				<textarea
-					class="border-2 border-gray-300 w-full h-24 rounded-md mx-auto"
-					placeholder="For future reference."
-					bind:value={form.description}
-				/>
+				<div class="mt-6">
+					<label for="description" class="text-lg font-bold ml-1">Description</label> (optional)
+					<textarea
+						class="border-2 border-gray-300 w-full h-24 rounded-md mx-auto"
+						placeholder="For future reference."
+						bind:value={form.description}
+					/>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<input
-		type="submit"
-		value="Save Entry"
-		class="border-2 border-emerald-600 bg-emerald-100 py-1 px-2 rounded-md text-emerald-700 mt-6 w-full mx-auto font-bold"
-	/>
-</form>
+		<input
+			type="submit"
+			value="Save Entry"
+			class="border-2 border-emerald-600 bg-emerald-100 py-1 px-2 rounded-md text-emerald-700 mt-6 w-full mx-auto font-bold"
+		/>
+	</form>
+</div>
 
 <style lang="postcss">
 	input:checked + label.location {

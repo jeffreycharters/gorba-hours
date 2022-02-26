@@ -62,21 +62,23 @@
 	};
 </script>
 
-<h1 class="m-2 text-xl font-bold">Keywords</h1>
+<div class="sm:max-w-lg sm:mx-auto">
+	<h1 class="m-2 text-xl font-bold">Keywords</h1>
 
-{#each keywords as keyword (keyword.uid)}
-	<div>
-		<KeywordCard
-			{keyword}
-			on:toggleKeywordActive={toggleKeywordActive}
-			on:deleteKeyword={deleteKeyword}
-		/>
+	{#each keywords as keyword (keyword.uid)}
+		<div>
+			<KeywordCard
+				{keyword}
+				on:toggleKeywordActive={toggleKeywordActive}
+				on:deleteKeyword={deleteKeyword}
+			/>
+		</div>
+	{/each}
+
+	<div class="m-2 px-2 text-slate-600">
+		<strong class="text-slate-700">Note:</strong> A deactivated keyword will not show up on the 'New
+		Entry' form.
 	</div>
-{/each}
 
-<div class="m-2 px-2 text-slate-600">
-	<strong class="text-slate-700">Note:</strong> A deactivated keyword will not show up on the 'New Entry'
-	form.
+	<KeywordAddForm on:addKeyword={addKeyword} />
 </div>
-
-<KeywordAddForm on:addKeyword={addKeyword} />
