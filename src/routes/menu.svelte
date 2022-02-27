@@ -1,17 +1,7 @@
 <script context="module">
+	import { protectedRoute } from '$lib/authUtils';
 	export const load = async ({ session }) => {
-		if (!session?.authorized) {
-			return {
-				status: 302,
-				redirect: '/'
-			};
-		}
-
-		return {
-			props: {
-				user: session.user
-			}
-		};
+		return protectedRoute(session, {});
 	};
 </script>
 
@@ -38,7 +28,9 @@
 	<div class="text-2xl text-center m-2 font-bold">Where to, {$user.username}?</div>
 	<div class="flex flex-col flex-wrap gap-2 max-w-lg align-center mx-auto">
 		{#each links as link (link.url)}
-			<a href={link.url}>{link.text}</a>
+			{#if !link.admin || (link.admin && $user.admin)}
+				<a href={link.url}>{link.text}</a>
+			{/if}
 		{/each}
 		<button on:click={logout}>Logout</button>
 	</div>

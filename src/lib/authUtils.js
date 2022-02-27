@@ -1,5 +1,4 @@
 import crypto from 'crypto';
-import { serialize } from 'cookie';
 
 export const hashPassword = (plaintext) => {
 	return new Promise((resolve, reject) => {
@@ -25,3 +24,13 @@ export const verify = (password, hash) => {
 
 export const emailRegex =
 	/^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i;
+
+export const protectedRoute = (session, base = {}) => {
+	if (!session.authorized) {
+		return {
+			redirect: '/',
+			status: 303
+		};
+	}
+	return base;
+};

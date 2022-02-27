@@ -9,8 +9,8 @@
 	};
 </script>
 
-<form class="flex flex-col mt-10 mx-2" on:submit|preventDefault={handleSubmit} autocomplete="off">
-	<label for="new-keyword" class="font-bold text-slate-500 ml-2 text-xl">Add new</label>
+<form class="flex flex-col mx-2" on:submit|preventDefault={handleSubmit} autocomplete="off">
+	<label for="new-keyword" class="font-semibold text-slate-700 ml-2 text-xl">Add new</label>
 	<input
 		type="text"
 		placeholder="short, generic"

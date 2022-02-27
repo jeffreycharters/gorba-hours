@@ -20,15 +20,19 @@ export const getOtherLocations = async () => {
 };
 
 export const toggleImportance = async (uid, activeState) => {
-	console.log(uid);
-	const trail = await prisma.trail.update({
+	const trail = await prisma.trail.findUnique({
+		where: {
+			uid
+		}
+	});
+	const updatedTrail = await prisma.trail.update({
 		where: {
 			uid: uid
 		},
 		data: {
-			active: activeState
+			active: !trail.active
 		}
 	});
 
-	return Promise.resolve(trail);
+	return Promise.resolve(updatedTrail);
 };
