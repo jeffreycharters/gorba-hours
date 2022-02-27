@@ -14,8 +14,10 @@
 <script>
 	export let keywords;
 
-	import KeywordCard from './components/KeywordCard.svelte';
+	import { user } from '$lib/stores';
 	import KeywordAddForm from './components/KeywordAddForm.svelte';
+	import { recessedComponent } from '$lib/styles';
+	import ToggleActive from '$lib/components/shared/ToggleActive.svelte';
 
 	const addKeyword = async (e) => {
 		const res = await fetch('/api/entries/keywords', {
@@ -40,45 +42,28 @@
 			},
 			body: JSON.stringify({ uid: e.detail })
 		});
-		const body = await res.json();
-		const inactivateKeyword = body.keyword;
-		if (res.ok) {
-			keywords = keywords.filter((k) => k.uid != e.detail);
-			keywords = [...keywords, inactivateKeyword].sort((a, b) => (a.keyword > b.keyword ? 1 : -1));
-		}
-	};
-
-	const deleteKeyword = async (e) => {
-		const res = await fetch('/api/entries/keywords', {
-			method: 'DELETE',
-			headers: {
-				'content-type': 'application/json'
-			},
-			body: JSON.stringify({ uid: e.detail })
-		});
-		if (res.ok) {
-			keywords = keywords.filter((k) => k.uid != e.detail);
-		}
 	};
 </script>
 
 <div class="sm:max-w-lg sm:mx-auto">
-	<h1 class="m-2 text-xl font-bold">Keywords</h1>
-
-	{#each keywords as keyword (keyword.uid)}
-		<div>
-			<KeywordCard
-				{keyword}
-				on:toggleKeywordActive={toggleKeywordActive}
-				on:deleteKeyword={deleteKeyword}
-			/>
-		</div>
-	{/each}
-
-	<div class="m-2 px-2 text-slate-600">
-		<strong class="text-slate-700">Note:</strong> A deactivated keyword will not show up on the 'New
-		Entry' form.
+	<div class={recessedComponent}>
+		<h1 class="m-2 text-xl font-bold">Keywords</h1>
 	</div>
 
-	<KeywordAddForm on:addKeyword={addKeyword} />
+	<div class="{recessedComponent} flex flex-col gap-1">
+		<ul>
+			{#each keywords as keyword (keyword.uid)}
+				<ToggleActive item={keyword} admin={$user.admin} on:toggleActive={toggleKeywordActive} />
+			{/each}
+		</ul>
+
+		<div class="m-2 px-2 text-slate-600 ">
+			<strong class="text-slate-700">Note:</strong> A deactivated keyword will not show up on the 'New
+			Entry' form.
+		</div>
+	</div>
+
+	<div class={recessedComponent}>
+		<KeywordAddForm on:addKeyword={addKeyword} />
+	</div>
 </div>
