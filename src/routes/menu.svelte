@@ -25,6 +25,7 @@
 	};
 
 	const links = [
+		{ url: '/products', text: 'Output Products' },
 		{ url: '/entries/new', text: 'New Entry' },
 		{ url: '/entries/list', text: 'List Entries' },
 		{ url: '/admin/users', text: 'User List' },
