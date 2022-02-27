@@ -17,13 +17,16 @@ export const handle = async ({ event, resolve }) => {
 };
 
 export const getSession = async (request) => {
+	const user = request?.locals?.user ? await getUserByEmail(request.locals.user.email) : null;
+	if (user) {
+		user.admin = user.role === 'admin' ? true : false;
+		delete user.role;
+		delete user.password;
+	}
+
 	return request?.locals?.user
 		? {
-				user: {
-					email: request.locals.user.email,
-					uid: request.locals.user.uid,
-					user: await getUserByEmail(request.locals.user.email)
-				},
+				user,
 				authorized: true
 		  }
 		: { authorized: false };

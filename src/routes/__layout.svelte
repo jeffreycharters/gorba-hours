@@ -1,3 +1,12 @@
+<script context="module">
+	import { user } from '$lib/stores';
+
+	export const load = ({ session }) => {
+		user.set(session.user);
+		return {};
+	};
+</script>
+
 <script>
 	import '../app.css';
 </script>

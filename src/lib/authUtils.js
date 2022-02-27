@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { serialize } from 'cookie';
 
 export const hashPassword = (plaintext) => {
 	return new Promise((resolve, reject) => {

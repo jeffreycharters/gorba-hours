@@ -29,8 +29,7 @@ export const post = async ({ request }) => {
 	}
 
 	const user = await getUserByEmailOrUsername(email, username);
-
-	if (user) {
+	if (user.uid) {
 		return {
 			status: 409,
 			body: {

@@ -33,7 +33,7 @@
 		>
 	{/each}
 	<input
-		type="number"
+		type="text"
 		bind:value={count}
 		id="volunteers"
 		class="w-12 rounded-lg border border-emerald-500 p-2 text-center font-bold text-emerald-700 bg-emerald-50"
