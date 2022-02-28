@@ -5,8 +5,9 @@
 
 <div>
 	<a
-		href="locations/{location.slug}"
-		class="text-gray-500 font-semibold flex items-center border border-gray-500 px-2 py-1 rounded-md bg-slate-100 text-sm"
+		sveltekit:prefetch
+		href="/locations/{location.slug}"
+		class="text-gray-600 font-semibold flex items-center border border-gray-500 px-2 py-1 rounded-md bg-slate-100 text-sm"
 	>
 		{#if !admin}
 			<svg

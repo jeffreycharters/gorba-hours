@@ -29,7 +29,7 @@
 	<div class="flex flex-col flex-wrap gap-2 max-w-lg align-center mx-auto">
 		{#each links as link (link.url)}
 			{#if !link.admin || (link.admin && $user.admin)}
-				<a href={link.url}>{link.text}</a>
+				<a sveltekit:prefetch href={link.url}>{link.text}</a>
 			{/if}
 		{/each}
 		<button on:click={logout}>Logout</button>
@@ -39,12 +39,12 @@
 <style lang="postcss">
 	a,
 	button {
-		@apply text-lg mx-4 border border-slate-200 bg-slate-200 rounded-md text-center p-2 text-slate-600 font-bold shadow-inner-sm transition-all ease-out;
+		@apply text-lg mx-4 border border-slate-300 bg-slate-100 rounded-md text-center p-2 text-emerald-700 font-bold shadow-md transition-all ease-in-out duration-100;
 	}
 
 	a:hover,
 	button:hover {
-		@apply text-emerald-600 bg-emerald-100 border border-emerald-300 shadow-md text-xl;
+		@apply text-emerald-600 bg-emerald-100 border border-slate-300 shadow-inner-sm;
 		transform: translateY(-1px);
 	}
 </style>

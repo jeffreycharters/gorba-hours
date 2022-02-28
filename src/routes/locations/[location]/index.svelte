@@ -13,7 +13,6 @@
 	import ToggleActive from '$lib/components/shared/ToggleActive.svelte';
 
 	import { user } from '$lib/stores';
-	import Trail from '../components/Trail.svelte';
 
 	export let location;
 	export let trails;
@@ -70,7 +69,7 @@
 	<div
 		class="shadow-inner-sm py-2 rounded-md border border-slate-100 bg-slate-50 my-2 text-emerald-800"
 	>
-		<h1 class="text-2xl font-bold text-center">Trails at {location.name}</h1>
+		<h1 class="text-2xl font-bold text-center">Trails at {location?.name}</h1>
 	</div>
 	<ul class="shadow-inner-sm pt-2 rounded-md border border-slate-100 bg-slate-50">
 		{#each trails as trail (trail.uid)}

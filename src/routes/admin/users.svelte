@@ -14,6 +14,8 @@
 </script>
 
 <script>
+	import { recessedComponent } from '$lib/styles';
+
 	import { slide } from 'svelte/transition';
 	import UserAdminCard from './components/UserAdminCard.svelte';
 
@@ -27,10 +29,25 @@
 	);
 </script>
 
-<div class="sm:max-w-lg mx-auto">
-	<div class="flex flex-row flex-wrap justify-between items-baseline w-auto">
-		<h1 class="text-2xl font-bold uppercase px-2 whitespace-nowrap">User List</h1>
-		<div class="mx-4" on:click={() => (showSearch = !showSearch)}>
+<div class="sm:max-w-lg sm:mx-auto">
+	<div class="flex flex-row flex-wrap justify-between items-baseline w-full {recessedComponent}">
+		<h1 class="text-2xl font-bold uppercase whitespace-nowrap text-emerald-700">User List</h1>
+		<div
+			class="cursor-pointer flex flex-row flex-nowrap items-center border border-slate-300 bg-slate-200 py-1 px-2 rounded-md"
+			on:click={() => (showSearch = !showSearch)}
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-4 w-4 mr-1"
+				viewBox="0 0 20 20"
+				fill="currentColor"
+			>
+				<path
+					fill-rule="evenodd"
+					d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+					clip-rule="evenodd"
+				/>
+			</svg>
 			{showSearch ? 'Hide Search' : 'Search Names'}
 		</div>
 
@@ -46,7 +63,7 @@
 		{/if}
 	</div>
 
-	<div class="flex flex-col gap-2 m-1 w-auto">
+	<div class="flex flex-col gap-2 w-full">
 		{#if visibleUsers.length > 0}
 			{#each visibleUsers as user (user.uid)}
 				<UserAdminCard {user} />

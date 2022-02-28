@@ -56,7 +56,7 @@
 		const res = await fetch(`/api/locations/${location}`);
 		const body = await res.json();
 		showLocationOtherField = false;
-		allTrails = body.trails;
+		allTrails = body.trails.filter((t) => t.active === true);
 	};
 
 	const formatCurrentDate = (dateObj) => {

@@ -57,7 +57,7 @@
 			{/each}
 		</ul>
 
-		<div class="m-2 px-2 text-slate-600 ">
+		<div class="m-2 px-6 py-2 text-slate-600 bg-slate-200 rounded-md border-slate-300 border">
 			<strong class="text-slate-700">Note:</strong> A deactivated keyword will not show up on the 'New
 			Entry' form.
 		</div>
