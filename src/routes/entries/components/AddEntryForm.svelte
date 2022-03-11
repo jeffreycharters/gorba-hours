@@ -151,14 +151,14 @@
 		if (!formValid) {
 			document.body.scrollIntoView();
 		}
-		// const res = await fetch('/api/entries', {
-		// 	method: 'POST',
-		// 	headers: { 'Content-Type': 'application/json' },
-		// 	body: JSON.stringify({ form })
-		// });
-		// if (res.ok) {
-		// 	goto('/entries/list');
-		// }
+		const res = await fetch('/api/entries', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ form })
+		});
+		if (res.ok) {
+			goto('/entries/list');
+		}
 	};
 
 	const titleClass = 'text-lg font-bold ml-2 text-slate-700 tracking-wide';

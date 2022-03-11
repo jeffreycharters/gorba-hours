@@ -29,7 +29,7 @@
 </script>
 
 <div class="my-2 p-2 shadow-inner-sm rounded-md border-slate-200 border bg-slate-50">
-	<h2 class="text-4xl font-bold mb-4 text-emerald-800 uppercase">Sign In</h2>
+	<h2 class="text-4xl font-bold mb-4 text-emerald-800 uppercase ml-4">Sign In</h2>
 
 	<form>
 		<div class="flex flex-col max-w-98vw md:w-96 gap-4">

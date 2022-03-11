@@ -1,9 +1,9 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 
-	let username = 'normie';
-	let email = 'normie@example.com';
-	let password = 'testpass123';
+	let username = '';
+	let email = '';
+	let password = '';
 
 	let flash;
 
@@ -31,7 +31,7 @@
 </script>
 
 <div class="my-2 p-2 shadow-inner-sm rounded-md border-slate-200 border bg-slate-50">
-	<h2 class="text-4xl font-bold mb-4 text-emerald-800 upper">Sign Up</h2>
+	<h2 class="text-4xl font-bold mb-4 ml-4 text-emerald-800 upper">Sign Up</h2>
 
 	<form>
 		<div class="flex flex-col max-w-98vw md:w-96 gap-4">
