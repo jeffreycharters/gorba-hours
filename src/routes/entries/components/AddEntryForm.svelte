@@ -1,15 +1,19 @@
 <script>
+	import { validateInput } from '$lib/formUtils';
 	import { goto } from '$app/navigation';
-	import { slide } from 'svelte/transition';
+	import { slide, fade } from 'svelte/transition';
 	import Counter from './Counter.svelte';
 	import TrailSelector from './TrailSelector.svelte';
 	import TagSelector from './TagSelector.svelte';
+	import ErrorMessage from './ErrorMessage.svelte';
 
 	export let user;
 
 	let allTrails;
 	let showLocationOtherField = false;
 	let otherLocations = [];
+	let formValid;
+	let formErrors;
 
 	const form = {
 		user: user.email,
@@ -25,6 +29,7 @@
 	};
 
 	$: if (new Date(form.date) > new Date()) form.date = formatDate(new Date());
+	$: if (new Date(form.date) < new Date('2022-03-01')) form.date = formatDate(new Date());
 
 	const fetchOtherLocations = async () => {
 		const res = await fetch('/api/locations/other');
@@ -70,17 +75,6 @@
 	};
 
 	form.date = formatDate(new Date());
-
-	const submitEntry = async () => {
-		const res = await fetch('/api/entries', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ form })
-		});
-		if (res.ok) {
-			goto('/entries/list');
-		}
-	};
 
 	const search = (string) => {
 		let results = [];
@@ -132,6 +126,41 @@
 		suggestions.classList.remove('has-suggestions');
 	};
 
+	const submitEntry = async () => {
+		[formValid, formErrors] = validateInput(
+			{
+				field: 'title',
+				input: form.title,
+				validators: [
+					{ name: 'required' },
+					{ name: 'minlength', args: 5 },
+					{ name: 'maxlength', args: 60 }
+				]
+			},
+			{
+				field: 'description',
+				input: form.description,
+				validators: [{ name: 'maxlength', args: 1000 }]
+			},
+			{
+				field: 'location',
+				input: form.location,
+				validators: [{ name: 'choice' }]
+			}
+		);
+		if (!formValid) {
+			document.body.scrollIntoView();
+		}
+		// const res = await fetch('/api/entries', {
+		// 	method: 'POST',
+		// 	headers: { 'Content-Type': 'application/json' },
+		// 	body: JSON.stringify({ form })
+		// });
+		// if (res.ok) {
+		// 	goto('/entries/list');
+		// }
+	};
+
 	const titleClass = 'text-lg font-bold ml-2 text-slate-700 tracking-wide';
 	const sectionClass = 'my-2 p-2 shadow-inner-sm rounded-md border-slate-200 border bg-slate-50';
 </script>
@@ -142,6 +171,13 @@
 	>
 		Log Volunteer Hours
 	</h1>
+
+	{#if formErrors}
+		<div class={sectionClass}>
+			<h2 class="text-xl text-red-600 text-center font-bold">Oh hell, errors!</h2>
+			<p class="text-red-600 text-center">Please correct the errors below and submit again.</p>
+		</div>
+	{/if}
 
 	<form
 		class="w-full my-2 mx-auto"
@@ -156,10 +192,12 @@
 					type="text"
 					name="title"
 					id="title"
+					maxlength="60"
 					class="border py-1 px-2 rounded-md w-full"
 					placeholder="Short Description"
 					bind:value={form.title}
 				/>
+				<ErrorMessage errors={formErrors && formErrors.filter((e) => e.field == 'title')} />
 			</div>
 
 			<div class="flex justify-start gap-4 items-center {sectionClass}">
@@ -190,6 +228,7 @@
 							</div>
 						{/each}
 					</div>
+					<ErrorMessage errors={formErrors && formErrors.filter((e) => e.field == 'location')} />
 
 					{#if showLocationOtherField}
 						<div transition:slide|local={{ duration: 200 }} class="mt-2 w-full">
@@ -265,6 +304,11 @@
 					placeholder="For future reference."
 					bind:value={form.description}
 				/>
+				{#if formErrors && formErrors.filter((e) => e.field == 'description').length > 0}
+					<div class="px-4 my-1 text-sm text-red-600 font-semibold" transition:fade>
+						{formErrors.find((e) => e.field == 'description').message}
+					</div>
+				{/if}
 			</div>
 		</div>
 
