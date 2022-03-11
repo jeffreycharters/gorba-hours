@@ -150,6 +150,7 @@
 		);
 		if (!formValid) {
 			document.body.scrollIntoView();
+			return;
 		}
 		const res = await fetch('/api/entries', {
 			method: 'POST',
@@ -172,7 +173,7 @@
 		Log Volunteer Hours
 	</h1>
 
-	{#if formErrors}
+	{#if formErrors && formErrors.length > 0}
 		<div class={sectionClass}>
 			<h2 class="text-xl text-red-600 text-center font-bold">Oh hell, errors!</h2>
 			<p class="text-red-600 text-center">Please correct the errors below and submit again.</p>
