@@ -1,4 +1,5 @@
 <script>
+	import { goto } from '$app/navigation';
 	import { slide } from 'svelte/transition';
 	import Counter from './Counter.svelte';
 	import TrailSelector from './TrailSelector.svelte';
@@ -22,6 +23,8 @@
 		trails: [],
 		tags: []
 	};
+
+	$: if (new Date(form.date) > new Date()) form.date = formatDate(new Date());
 
 	const fetchOtherLocations = async () => {
 		const res = await fetch('/api/locations/other');
@@ -59,14 +62,14 @@
 		allTrails = body.trails.filter((t) => t.active === true);
 	};
 
-	const formatCurrentDate = (dateObj) => {
+	const formatDate = (dateObj) => {
 		const year = dateObj.getFullYear();
 		const month = dateObj.getMonth() + 1 < 10 ? `0${dateObj.getMonth() + 1}` : dateObj.getMonth();
 		const day = dateObj.getDate() < 10 ? `0${dateObj.getDate()}` : dateObj.getDate();
 		return `${year}-${month}-${day}`;
 	};
 
-	form.date = formatCurrentDate(new Date());
+	form.date = formatDate(new Date());
 
 	const submitEntry = async () => {
 		const res = await fetch('/api/entries', {
@@ -74,6 +77,9 @@
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ form })
 		});
+		if (res.ok) {
+			goto('/entries/list');
+		}
 	};
 
 	const search = (string) => {
